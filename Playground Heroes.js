@@ -62,6 +62,7 @@ var playState = {
         this.playerCreate();
         
         // Function that creates the 'walls' and places them
+        // Needs to be changed to the right level and more levels added
         this.wallsCreate();
         
     },
