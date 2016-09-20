@@ -30,6 +30,7 @@ var levelAtlantis = {
         
         this.load.image('player', 'assets/player.png');
         this.load.image('wall', 'assets/wall.png');
+        this.load.image('lava', 'assets/lava.png');
     },
 
     create: function() { 
@@ -57,8 +58,10 @@ var levelAtlantis = {
         // Add the cursor keys
         this.cursors = this.input.keyboard.createCursorKeys();
         
+        // Function that creates the player sprite and places it
         this.playerCreate();
         
+        // Function that creates the 'walls' and places them
         this.wallsCreate();
         
     },
@@ -68,8 +71,11 @@ var levelAtlantis = {
         // Display the fps counter
         game.debug.text(game.time.fps, 2, 14, "#00ff00");
         
-        // Add collision betwen the player and the ground (walls)
+        // Add collision between the player and the ground (walls)
         this.physics.arcade.collide(this.player, this.walls);
+        
+        // Add overlap between the player and lava, when they touch, restart the game
+        this.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
         
         // Player movement
         this.playerMove();
@@ -107,12 +113,15 @@ var levelAtlantis = {
     
     wallsCreate: function() {
         
-        // Add the walls group
+        // Add the walls group and the lava group
         this.walls = game.add.group();
+        this.enemies = game.add.group();
+        
         
         // Create the level Atlantis
         // Add every space is 20px another 30px is added to the left and right
-        // Optimal size is 45 wide and 22 tall
+        // Optimal size is 45 wide and 22 tall, the last five is for the resart block at the bottom
+        // x = walls / o = enemies
         var Atlantis = [
             '                                             ',
             '                                             ',
@@ -135,6 +144,12 @@ var levelAtlantis = {
             '                                             ',
             '                                             ',
             '    xxxxx  xxxx   xxxxxxxxx   xxxx  xxxxx    ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            'ooooooooooooooooooooooooooooooooooooooooooooo',
         ];
 
         for(var i = 0; i < Atlantis.length; i++){
@@ -145,9 +160,21 @@ var levelAtlantis = {
                     var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
                     this.walls.add(wall);
                     wall.body.immovable = true;
-                }           
+                }   
+                
+                // Create the enemies
+                if (Atlantis[i][j] == 'o'){
+                    var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
+                    this.enemies.add(lava);
+                    lava.body.immovable = true;
+                } 
             }
         }
+    },
+    
+    restart: function() {
+        game.state.start('levelAtlantis');
+        
     },
 };
 
