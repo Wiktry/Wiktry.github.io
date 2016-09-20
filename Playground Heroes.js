@@ -1,3 +1,4 @@
+// Comment change and git testing
 // Initialize Phaser, and create a 400px by 490px game
 var game = new Phaser.Game(2000, 1125);
 
