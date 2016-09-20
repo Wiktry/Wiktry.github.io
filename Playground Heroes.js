@@ -1,6 +1,5 @@
-// Comment change and git testing
-// Initialize Phaser, and create a 400px by 490px game
-var game = new Phaser.Game(2000, 1125);
+// Initialize Phaser, and create a 960px by 640px game
+var game = new Phaser.Game(960, 540);
 
 var mainState = {
     preload: function() {
@@ -40,8 +39,8 @@ var levelAtlantis = {
         
         // Scaling
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        this.scale.maxWidth = this.game.width;
-        this.scale.maxHeight = this.game.height;
+        this.scale.maxWidth = this.scale.Exact_fit;
+        this.scale.maxHeight = this.scale.Exact_fit;
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         this.scale.setScreenSize = true;
@@ -95,9 +94,9 @@ var levelAtlantis = {
         
         // Player movement
         if (this.cursors.left.isDown)
-            this.player.body.velocity.x = -250;
+            this.player.body.velocity.x = -200;
         else if (this.cursors.right.isDown)
-            this.player.body.velocity.x = 250;
+            this.player.body.velocity.x = 200;
         else
             this.player.body.velocity.x = 0;
         
@@ -112,31 +111,30 @@ var levelAtlantis = {
         this.walls = game.add.group();
         
         // Create the level Atlantis
+        // Add every space is 20px another 30px is added to the left and right
+        // Optimal size is 45 wide and 22 tall
         var Atlantis = [
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '            xxx       xxxx       xxx            ',
-            '                                                ',
-            '                                                ',
-            '                                                ',
-            '    xxxxx  xxxx   xxxxxxxxxxxx   xxxx  xxxxx    ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '           xxx      xxxxx      xxx           ',
+            '                                             ',
+            '                                             ',
+            '                                             ',
+            '    xxxxx  xxxx   xxxxxxxxx   xxxx  xxxxx    ',
         ];
 
         for(var i = 0; i < Atlantis.length; i++){
@@ -144,7 +142,7 @@ var levelAtlantis = {
         
                 // Create the walls
                 if (Atlantis[i][j] == 'x'){
-                    var wall = this.game.add.sprite(40+40*j, 40+40*i, 'wall');
+                    var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
                     this.walls.add(wall);
                     wall.body.immovable = true;
                 }           
