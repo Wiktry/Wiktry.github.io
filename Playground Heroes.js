@@ -68,9 +68,6 @@ var levelAtlantis = {
 
     update: function() {
         
-        // Display the fps counter
-        game.debug.text(game.time.fps, 2, 14, "#00ff00");
-        
         // Add collision between the player and the ground (walls)
         this.physics.arcade.collide(this.player, this.walls);
         
@@ -79,12 +76,16 @@ var levelAtlantis = {
         
         // Player movement
         this.playerMove();
+        
+        // Debug function
+        this.Debug();
+        
     },
     
     playerCreate: function() {
         
         // Add the player sprite
-        this.player = this.add.sprite(70, 100, 'player');
+        this.player = this.add.sprite(120, 390, 'player');
         
         // Enable physics for the player
         this.physics.arcade.enable(this.player)
@@ -174,6 +175,20 @@ var levelAtlantis = {
     
     restart: function() {
         game.state.start('levelAtlantis');
+        
+    },
+    
+    Debug: function() {
+        // Add the mouse position to variables
+        var mouseX = parseInt(this.input.mousePointer.x);
+        var mouseY = parseInt(this.input.mousePointer.y);
+        
+        // Display the mouse position
+        game.debug.text("MouseX = " + mouseX, 2, 28, "#00ff00");
+        game.debug.text("MouseY = " + mouseY, 2, 42, "#00ff00");
+        
+        // Display the fps counter
+        game.debug.text("fps = " + game.time.fps, 2, 14, "#00ff00");
         
     },
 };
