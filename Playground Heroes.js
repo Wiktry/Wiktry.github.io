@@ -25,7 +25,7 @@ var mainState = {
 };
 
 // Create our 'main' state that will contain the game
-var levelAtlantis = {
+var playState = {
     preload: function() { 
         
         this.load.image('player', 'assets/player.png');
@@ -174,7 +174,7 @@ var levelAtlantis = {
     },
     
     restart: function() {
-        game.state.start('levelAtlantis');
+        game.state.start('playState');
         
     },
     
@@ -194,7 +194,7 @@ var levelAtlantis = {
 };
 
 // Add the 'mainState' and call it 'main'
-game.state.add('levelAtlantis', levelAtlantis); 
+game.state.add('playState', playState); 
 
 // Start the state to actually start the game
-game.state.start('levelAtlantis');
+game.state.start('playState');
