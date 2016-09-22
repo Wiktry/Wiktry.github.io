@@ -6,7 +6,7 @@ var mainState = {
         // This function will be executed at the beginning     
         // That's where we load the images and sounds
         
-        this.load.image();
+        this.load.spreadsheet();
     },
     
     create: function() {
