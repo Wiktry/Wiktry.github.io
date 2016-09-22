@@ -1,19 +1,34 @@
 // Initialize Phaser, and create a 960px by 640px game
 var game = new Phaser.Game(960, 540);
 
+// Create the 'mainState' that loads the game and contains the startup menu
 var mainState = {
     preload: function() {
         // This function will be executed at the beginning     
         // That's where we load the images and sounds
         
-        this.load.spreadsheet();
+        this.load.image('playButton', 'assets/PlayButton.png');
+        this.load.image('playButtonHoover', 'assets/PlayButtonHoover.png');
+        
     },
     
     create: function() {
         // This function is called after the preload function     
         // Here we set up the game, display sprites, etc.
         
-    
+        // Scaling
+        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+        this.scale.maxWidth = this.scale.Exact_fit;
+        this.scale.maxHeight = this.scale.Exact_fit;
+        this.scale.pageAlignHorizontally = true;
+        this.scale.pageAlignVertically = true;
+        this.scale.setScreenSize = true;
+        
+        // Stage background color
+        this.stage.backgroundColor = '#fefefe';
+        
+        // Button to start the game
+        var playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, playButtonOver);
         
     },
     
@@ -22,9 +37,19 @@ var mainState = {
         // It contains the game's logic
         
     },
+    
+    playButtonClick: function() {
+        // Changes to the 'playGame' state
+        
+        game.state.start('playState');
+    },
+    
+    plauButtonOver: function() {
+        
+    },
 };
 
-// Create our 'main' state that will contain the game
+// Create our 'playGame' state that will contain the game
 var playState = {
     preload: function() { 
         
@@ -196,6 +221,7 @@ var playState = {
 
 // Add the 'mainState' and call it 'main'
 game.state.add('playState', playState); 
+game.state.add('mainState', mainState);
 
 // Start the state to actually start the game
-game.state.start('playState');
+game.state.start('mainState');
