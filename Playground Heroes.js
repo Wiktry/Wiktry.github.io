@@ -7,8 +7,7 @@ var mainState = {
         // This function will be executed at the beginning     
         // That's where we load the images and sounds
         
-        this.load.image('playButton', 'assets/PlayButton.png');
-        this.load.image('playButtonHoover', 'assets/PlayButtonHoover.png');
+        this.load.atlas('playButton', 'assets/textureAtlas.png', 'assets/textureAtlas.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
         
     },
     
@@ -28,7 +27,7 @@ var mainState = {
         this.stage.backgroundColor = '#fefefe';
         
         // Button to start the game
-        var playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, playButtonOver);
+        var playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'playButton', 'PlayButtonHoover.png');
         
     },
     
@@ -44,7 +43,7 @@ var mainState = {
         game.state.start('playState');
     },
     
-    plauButtonOver: function() {
+    playButtonOver: function() {
         
     },
 };
@@ -88,7 +87,7 @@ var playState = {
         
         // Function that creates the 'walls' and places them
         // Needs to be changed to the right level and more levels added
-        this.wallsCreate();
+        this.levelCreate();
         
     },
 
@@ -138,47 +137,12 @@ var playState = {
             this.player.body.velocity.y = -350;
     },
     
-    wallsCreate: function() {
+    levelCreate: function() {
         
         // Add the walls group and the lava group
         this.walls = game.add.group();
         this.enemies = game.add.group();
         
-        
-        // Create the level Atlantis
-        // Add every space is 20px another 30px is added to the left and right
-        // Optimal size is 45 wide and 22 tall, the last five is for the resart block at the bottom
-        // x = walls / o = enemies
-        var Atlantis = [
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '           xxx      xxxxx      xxx           ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '    xxxxx  xxxx   xxxxxxxxx   xxxx  xxxxx    ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            '                                             ',
-            'ooooooooooooooooooooooooooooooooooooooooooooo',
-        ];
-
         for(var i = 0; i < Atlantis.length; i++){
             for(var j = 0; j < Atlantis[i].length; j++){
         
