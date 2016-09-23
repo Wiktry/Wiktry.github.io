@@ -33,7 +33,7 @@ var mainState = {
         var playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
         
         // Logo
-        var logo = this.add.image(this.world.centerX -190, 200, 'logo');
+        var logo = this.add.image(this.world.centerX -190, 100, 'logo');
         
         // Enable the keyboard
         this.enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -105,6 +105,7 @@ var playState = {
         
         // Player movement vars
         this.playerMove = 0;
+        this.playerDown = 0;
         
     },
 
@@ -180,6 +181,16 @@ var playState = {
         // Player jumping
         if (this.cursors.up.isDown && this.player.body.touching.down)
             this.player.body.velocity.y = -350;
+        
+        // Player going down through platforms
+        if (this.cursors.down.isDown && this.player.body.position.y < 375){
+            this.player.body.checkCollision.down = false;
+            this.playerDown = 5;
+        }
+        else if (this.playerDown < 2)
+            this.player.body.checkCollision.down = true;
+        else if (this.playerDown > 0)
+            this.playerDown--;
     },
     
     levelCreate: function() {
