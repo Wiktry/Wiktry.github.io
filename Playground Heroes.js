@@ -99,8 +99,7 @@ var playState = {
         // Function that creates the player sprite and places it
         this.playerCreate();
         
-        // Function that creates the 'walls' and places them
-        // Needs to be changed to the right level and more levels added
+        // Function that creates the game level
         this.levelCreate();
         
         // Player movement vars
@@ -199,6 +198,7 @@ var playState = {
         this.walls = game.add.group();
         this.enemies = game.add.group();
         
+        // Creates the level
         for(var i = 0; i < Atlantis.length; i++){
             for(var j = 0; j < Atlantis[i].length; j++){
         
@@ -209,7 +209,7 @@ var playState = {
                     wall.body.immovable = true;
                 }   
                 
-                // Create the enemies
+                // Create the enemies, the blocks that restarts the game
                 if (Atlantis[i][j] == 'o'){
                     var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
                     this.enemies.add(lava);
@@ -242,8 +242,8 @@ var playState = {
 
 
 // Add the 'mainState' and call it 'main'
-game.state.add('playState', playState); 
 game.state.add('mainState', mainState);
+game.state.add('playState', playState); 
 
 // Start the state to actually start the game
 game.state.start('mainState');
