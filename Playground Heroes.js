@@ -1,7 +1,8 @@
 // Initialize Phaser, and create a 960px by 640px game
 var game = new Phaser.Game(960, 540);
 
-
+// Keeps the information on which level to load
+    var levelDecide;
 
 // Create the 'mainState' that loads the game and contains the startup menu
 var mainState = {
@@ -37,6 +38,8 @@ var mainState = {
         
         // Enable the keyboard
         this.enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
+        this.backspace = this.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
+        this.home = this.input.keyboard.addKey(Phaser.Keyboard.HOME);
         
     },
     
@@ -44,8 +47,18 @@ var mainState = {
         // This function is called 60 times per second    
         // It contains the game's logic
         
-        if(this.enter.isDown)
+        if(this.enter.isDown){
             this.playButtonClick();
+            levelDecide = 1;
+        }
+        if(this.backspace.isDown){
+            this.playButtonClick();
+            levelDecide = 2;
+        }
+        if(this.home.isDown){
+            this.playButtonClick();
+            levelDecide = 3;
+        }
         
     },
     
@@ -142,11 +155,11 @@ var playState = {
     playerMovement: function() {
         
         // Player movement
-        if (this.cursors.left.isDown) {
-            this.playerMove = -200;
+        if (this.cursors.left.isDown && this.playerMove >= -150) {
+            this.playerMove -= 10;
         }
-        else if (this.cursors.right.isDown) {
-            this.playerMove = 200;
+        else if (this.cursors.right.isDown && this.playerMove <= 150) {
+            this.playerMove += 10;
         }
         else if (this.playerMove <= 10 && this.playerMove >= -10)
             // set 'playerMove' to 0 when it is between 10 and -10, to stop it from getting stuck on 6 or 2
@@ -198,23 +211,70 @@ var playState = {
         this.walls = game.add.group();
         this.enemies = game.add.group();
         
-        // Creates the level
-        for(var i = 0; i < Atlantis.length; i++){
-            for(var j = 0; j < Atlantis[i].length; j++){
-        
-                // Create the walls
-                if (Atlantis[i][j] == 'x'){
-                    var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
-                    this.walls.add(wall);
-                    wall.body.immovable = true;
-                }   
-                
-                // Create the enemies, the blocks that restarts the game
-                if (Atlantis[i][j] == 'o'){
-                    var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
-                    this.enemies.add(lava);
-                    lava.body.immovable = true;
-                } 
+        // I need to rebuild the whole block and either move it to another doc or 
+        // figure out a way of making it smaller
+        // Gets the level info from 'levelDecide' and builds the right level
+        if (levelDecide == 1) {
+            // Creates the level
+            for(var i = 0; i < Atlantis.length; i++){
+                for(var j = 0; j < Atlantis[i].length; j++){
+
+                    // Create the walls
+                    if (Atlantis[i][j] == 'x'){
+                        var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                        this.walls.add(wall);
+                        wall.body.immovable = true;
+                    }   
+
+                    // Create the enemies, the blocks that restarts the game
+                    if (Atlantis[i][j] == 'o'){
+                        var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
+                        this.enemies.add(lava);
+                        lava.body.immovable = true;
+                    } 
+                }
+            }
+        }
+        else if (levelDecide == 2) {
+            // Creates the level
+            for(var i = 0; i < Aether.length; i++){
+                for(var j = 0; j < Aether[i].length; j++){
+
+                    // Create the walls
+                    if (Aether[i][j] == 'x'){
+                        var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                        this.walls.add(wall);
+                        wall.body.immovable = true;
+                    }   
+
+                    // Create the enemies, the blocks that restarts the game
+                    if (Aether[i][j] == 'o'){
+                        var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
+                        this.enemies.add(lava);
+                        lava.body.immovable = true;
+                    } 
+                }
+            }
+        }
+        else if (levelDecide == 3) {
+            // Creates the level
+            for(var i = 0; i < Flatlands.length; i++){
+                for(var j = 0; j < Flatlands[i].length; j++){
+
+                    // Create the walls
+                    if (Flatlands[i][j] == 'x'){
+                        var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                        this.walls.add(wall);
+                        wall.body.immovable = true;
+                    }   
+
+                    // Create the enemies, the blocks that restarts the game
+                    if (Flatlands[i][j] == 'o'){
+                        var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
+                        this.enemies.add(lava);
+                        lava.body.immovable = true;
+                    } 
+                }
             }
         }
     },
