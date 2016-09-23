@@ -1,6 +1,8 @@
 // Initialize Phaser, and create a 960px by 640px game
 var game = new Phaser.Game(960, 540);
 
+
+
 // Create the 'mainState' that loads the game and contains the startup menu
 var mainState = {
     preload: function() {
@@ -8,6 +10,7 @@ var mainState = {
         // That's where we load the images and sounds
         
         this.load.atlas('playButton', 'assets/textureAtlas.png', 'assets/textureAtlas.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
+        this.load.image('logo', 'assets/Logo.png');
         
     },
     
@@ -24,16 +27,25 @@ var mainState = {
         this.scale.setScreenSize = true;
         
         // Stage background color
-        this.stage.backgroundColor = '#fefefe';
+        this.stage.backgroundColor = '#3C9BBA';
         
         // Button to start the game
-        var playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'playButton', 'PlayButtonHoover.png');
+        var playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
+        
+        // Logo
+        var logo = this.add.image(this.world.centerX -190, 200, 'logo');
+        
+        // Enable the keyboard
+        this.enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
         
     },
     
     update: function() {
         // This function is called 60 times per second    
         // It contains the game's logic
+        
+        if(this.enter.isDown)
+            this.playButtonClick();
         
     },
     
@@ -47,6 +59,8 @@ var mainState = {
         
     },
 };
+
+
 
 // Create our 'playGame' state that will contain the game
 var playState = {
@@ -89,6 +103,9 @@ var playState = {
         // Needs to be changed to the right level and more levels added
         this.levelCreate();
         
+        // Player movement vars
+        this.playerMove = 0;
+        
     },
 
     update: function() {
@@ -100,7 +117,7 @@ var playState = {
         this.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
         
         // Player movement
-        this.playerMove();
+        this.playerMovement();
         
         // Debug function
         this.Debug();
@@ -122,18 +139,46 @@ var playState = {
         this.player.body.checkCollision.right = false;
     },
     
-    playerMove: function() {
+    playerMovement: function() {
         
         // Player movement
-        if (this.cursors.left.isDown)
-            this.player.body.velocity.x = -200;
-        else if (this.cursors.right.isDown)
-            this.player.body.velocity.x = 200;
+        if (this.cursors.left.isDown) {
+            this.playerMove = -200;
+        }
+        else if (this.cursors.right.isDown) {
+            this.playerMove = 200;
+        }
+        else if (this.playerMove <= 10 && this.playerMove >= -10)
+            // set 'playerMove' to 0 when it is between 10 and -10, to stop it from getting stuck on 6 or 2
+            this.playerMove = 0;
+        else if (this.player.body.touching.down) {
+            // Player loses speed over time when button is not pressed
+            // Friction when player is on the ground
+            if (this.playerMove < 0)
+                this.playerMove += 8;
+            if (this.playerMove > 0)
+                this.playerMove -= 8;
+        }
+        else {
+            // Losses speed slower in the air
+            if (this.playerMove < 0)
+                this.playerMove += 2;
+            if (this.playerMove > 0)
+                this.playerMove -= 2;
+        }
+        
+        // Set the movement speed to the var 'playerMove'
+        if (this.playerMove < 0)
+            this.player.body.velocity.x = this.playerMove;
+        else if (this.playerMove > 0)
+            this.player.body.velocity.x = this.playerMove;
         else
             this.player.body.velocity.x = 0;
         
+        game.debug.text("playerMove = " + this.playerMove, 2, 56, "#00ff00");
+        
         // Player jumping
-        if (this.cursors.up.isDown && this. player.body.touching.down)
+        if (this.cursors.up.isDown && this.player.body.touching.down)
             this.player.body.velocity.y = -350;
     },
     
@@ -165,7 +210,7 @@ var playState = {
     
     restart: function() {
         game.state.start('playState');
-        
+        this.playerMove = 0;
     },
     
     Debug: function() {
@@ -182,6 +227,8 @@ var playState = {
         
     },
 };
+
+
 
 // Add the 'mainState' and call it 'main'
 game.state.add('playState', playState); 
