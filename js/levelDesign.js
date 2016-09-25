@@ -3,7 +3,7 @@
 // Optimal size is 45 wide and 22 tall, the last five is for the resart block at the bottom
 // x = walls / o = enemies
         
-
+// Level identifier '1'
 var Atlantis = [
     '                                             ',
     '                                             ',
@@ -34,6 +34,7 @@ var Atlantis = [
     'ooooooooooooooooooooooooooooooooooooooooooooo',    
 ];
 
+// Level identifier '2'
 var Aether = [
     '                                             ',
     '                                             ',
@@ -64,6 +65,7 @@ var Aether = [
     'ooooooooooooooooooooooooooooooooooooooooooooo',    
 ];
 
+// Level identifier '3'
 var Flatlands = [
     '                                             ',
     '                                             ',

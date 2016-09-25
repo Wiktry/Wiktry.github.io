@@ -2,7 +2,7 @@
 var game = new Phaser.Game(960, 540);
 
 // Keeps the information on which level to load
-    var levelDecide;
+var levelDecide;
 
 // Create the 'mainState' that loads the game and contains the startup menu
 var mainState = {
@@ -48,16 +48,16 @@ var mainState = {
         // It contains the game's logic
         
         if(this.enter.isDown){
-            this.playButtonClick();
             levelDecide = 1;
+            this.playButtonClick();
         }
         if(this.backspace.isDown){
-            this.playButtonClick();
             levelDecide = 2;
+            this.playButtonClick();
         }
         if(this.home.isDown){
-            this.playButtonClick();
             levelDecide = 3;
+            this.playButtonClick();
         }
         
     },
@@ -188,6 +188,7 @@ var playState = {
         else
             this.player.body.velocity.x = 0;
         
+        // Player's current movespeed
         game.debug.text("playerMove = " + this.playerMove, 2, 56, "#00ff00");
         
         // Player jumping
@@ -207,6 +208,14 @@ var playState = {
     
     levelCreate: function() {
         
+        // Decide the the level to create and add it to 'levelToBuild'
+        if (levelDecide == 1)
+            this.levelToBuild = Atlantis;
+        else if (levelDecide == 2)
+            this.levelToBuild = Aether;
+        else if (levelDecide == 3)
+            this.levelToBuild = Flatlands;
+        
         // Add the walls group and the lava group
         this.walls = game.add.group();
         this.enemies = game.add.group();
@@ -214,67 +223,23 @@ var playState = {
         // I need to rebuild the whole block and either move it to another doc or 
         // figure out a way of making it smaller
         // Gets the level info from 'levelDecide' and builds the right level
-        if (levelDecide == 1) {
-            // Creates the level
-            for(var i = 0; i < Atlantis.length; i++){
-                for(var j = 0; j < Atlantis[i].length; j++){
+        // Creates the level
+        for(var i = 0; i < this.levelToBuild.length; i++){
+            for(var j = 0; j < this.levelToBuild[i].length; j++){
 
-                    // Create the walls
-                    if (Atlantis[i][j] == 'x'){
-                        var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
-                        this.walls.add(wall);
-                        wall.body.immovable = true;
-                    }   
-
-                    // Create the enemies, the blocks that restarts the game
-                    if (Atlantis[i][j] == 'o'){
-                        var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
-                        this.enemies.add(lava);
-                        lava.body.immovable = true;
-                    } 
-                }
-            }
-        }
-        else if (levelDecide == 2) {
-            // Creates the level
-            for(var i = 0; i < Aether.length; i++){
-                for(var j = 0; j < Aether[i].length; j++){
-
-                    // Create the walls
-                    if (Aether[i][j] == 'x'){
-                        var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
-                        this.walls.add(wall);
-                        wall.body.immovable = true;
-                    }   
-
-                    // Create the enemies, the blocks that restarts the game
-                    if (Aether[i][j] == 'o'){
-                        var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
-                        this.enemies.add(lava);
-                        lava.body.immovable = true;
-                    } 
-                }
-            }
-        }
-        else if (levelDecide == 3) {
-            // Creates the level
-            for(var i = 0; i < Flatlands.length; i++){
-                for(var j = 0; j < Flatlands[i].length; j++){
-
-                    // Create the walls
-                    if (Flatlands[i][j] == 'x'){
-                        var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
-                        this.walls.add(wall);
-                        wall.body.immovable = true;
-                    }   
-
-                    // Create the enemies, the blocks that restarts the game
-                    if (Flatlands[i][j] == 'o'){
-                        var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
-                        this.enemies.add(lava);
-                        lava.body.immovable = true;
-                    } 
-                }
+                // Create the walls
+                if (this.levelToBuild[i][j] == 'x'){
+                    var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                    this.walls.add(wall);
+                    wall.body.immovable = true;
+                }   
+                    
+                // Create the enemies, the blocks that restarts the game
+                if (this.levelToBuild[i][j] == 'o'){
+                    var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
+                    this.enemies.add(lava);
+                    lava.body.immovable = true;
+                } 
             }
         }
     },
