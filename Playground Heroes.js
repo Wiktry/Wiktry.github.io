@@ -47,6 +47,14 @@ var mainState = {
         // This function is called 60 times per second    
         // It contains the game's logic
         
+        // Keyboard shortcuts to start the game
+        this.keyboardShorts();
+        
+    },
+    
+    keyboardShorts: function() {
+        // Keyboard shortcuts to start the game
+        
         if(this.enter.isDown){
             levelDecide = 1;
             this.playButtonClick();
@@ -59,7 +67,6 @@ var mainState = {
             levelDecide = 3;
             this.playButtonClick();
         }
-        
     },
     
     playButtonClick: function() {
@@ -122,6 +129,9 @@ var playState = {
     },
 
     update: function() {
+        
+        // Add collision between the player and the ground (floor)
+        this.physics.arcade.collide(this.player, this.floors);
         
         // Add collision between the player and the ground (walls)
         this.physics.arcade.collide(this.player, this.walls);
@@ -204,6 +214,8 @@ var playState = {
             this.player.body.checkCollision.down = true;
         else if (this.playerDown > 0)
             this.playerDown--;
+        if (this.player.body.position.y > 400)
+            this.player.body.checkCollision.down = true;
     },
     
     levelCreate: function() {
@@ -217,6 +229,7 @@ var playState = {
             this.levelToBuild = Flatlands;
         
         // Add the walls group and the lava group
+        this.floors = game.add.group();
         this.walls = game.add.group();
         this.enemies = game.add.group();
         
@@ -226,7 +239,14 @@ var playState = {
         // Creates the level
         for(var i = 0; i < this.levelToBuild.length; i++){
             for(var j = 0; j < this.levelToBuild[i].length; j++){
-
+                
+                // Create the floor
+                if (this.levelToBuild[i][j] == 'f'){
+                    var floor = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                    this.floors.add(floor);
+                    floor.body.immovable = true;
+                }
+                
                 // Create the walls
                 if (this.levelToBuild[i][j] == 'x'){
                     var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
