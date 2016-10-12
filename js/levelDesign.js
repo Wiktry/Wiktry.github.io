@@ -31,7 +31,7 @@ var Atlantis = [
     '                                             ',
     '                                             ',
     '                                             ',
-    'ooooooooooooooooooooooooooooooooooooooooooooo',    
+    'ooooooooooooooooooooooooooooooooooooooooooooooo',    
 ];
 
 // Level identifier '2'
@@ -62,7 +62,7 @@ var Aether = [
     '                                             ',
     '                                             ',
     '                                             ',
-    'ooooooooooooooooooooooooooooooooooooooooooooo',    
+    'ooooooooooooooooooooooooooooooooooooooooooooooo',    
 ];
 
 // Level identifier '3'
