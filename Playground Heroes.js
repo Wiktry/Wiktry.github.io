@@ -31,10 +31,10 @@ var mainState = {
         this.stage.backgroundColor = '#3C9BBA';
         
         // Button to start the game
-        var playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
+        this.playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
         
         // Logo
-        var logo = this.add.image(this.world.centerX -190, 100, 'logo');
+        this.logo = this.add.image(this.world.centerX -190, 100, 'logo');
         
         // Enable the keyboard
         this.enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
@@ -153,7 +153,7 @@ var playState = {
         this.player = this.add.sprite(120, 390, 'player');
         
         // Enable physics for the player
-        this.physics.arcade.enable(this.player)
+        this.physics.arcade.enable(this.player);
         
         // Add gravity to the player
         this.player.body.gravity.y = 600;
