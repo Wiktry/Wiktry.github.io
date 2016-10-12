@@ -2,5 +2,6 @@
 <!-- Komodo Project File - DO NOT EDIT -->
 <project id="4a61dd9e-5ba0-4d93-a9c2-19260baa4908" kpf_version="5" name="PlaygroundHeroes.komodoproject">
 <preference-set idref="4a61dd9e-5ba0-4d93-a9c2-19260baa4908" id="project" preftype="project">
+  <long id="prefs_version">1</long>
 </preference-set>
 </project>

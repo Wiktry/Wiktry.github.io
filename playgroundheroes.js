@@ -1,87 +1,3 @@
-// Initialize Phaser, and create a 960px by 640px game
-var game = new Phaser.Game(960, 540);
-
-// Keeps the information on which level to load
-var levelDecide;
-
-// Create the 'mainState' that loads the game and contains the startup menu
-var mainState = {
-    preload: function() {
-        // This function will be executed at the beginning     
-        // That's where we load the images and sounds
-        
-        this.load.atlas('playButton', 'assets/textureAtlas.png', 'assets/textureAtlas.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
-        this.load.image('logo', 'assets/Logo.png');
-        
-    },
-    
-    create: function() {
-        // This function is called after the preload function     
-        // Here we set up the game, display sprites, etc.
-        
-        // Scaling
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        this.scale.maxWidth = this.scale.Exact_fit;
-        this.scale.maxHeight = this.scale.Exact_fit;
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-        this.scale.setScreenSize = true;
-        
-        // Stage background color
-        this.stage.backgroundColor = '#3C9BBA';
-        
-        // Button to start the game
-        this.playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
-        
-        // Logo
-        this.logo = this.add.image(this.world.centerX -190, 100, 'logo');
-        
-        // Enable the keyboard
-        this.enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        this.backspace = this.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
-        this.home = this.input.keyboard.addKey(Phaser.Keyboard.HOME);
-        
-    },
-    
-    update: function() {
-        // This function is called 60 times per second    
-        // It contains the game's logic
-        
-        // Keyboard shortcuts to start the game
-        this.keyboardShorts();
-        
-    },
-    
-    keyboardShorts: function() {
-        // Keyboard shortcuts to start the game
-        
-        if(this.enter.isDown){
-            levelDecide = 1;
-            this.playButtonClick();
-        }
-        if(this.backspace.isDown){
-            levelDecide = 2;
-            this.playButtonClick();
-        }
-        if(this.home.isDown){
-            levelDecide = 3;
-            this.playButtonClick();
-        }
-    },
-    
-    playButtonClick: function() {
-        // Changes to the 'playGame' state
-        
-        game.state.start('playState');
-    },
-    
-    playButtonOver: function() {
-        
-    },
-};
-
-
-
 // Create our 'playGame' state that will contain the game
 var playState = {
     preload: function() { 
@@ -110,7 +26,7 @@ var playState = {
         // Start the physics engine 'ARCADE'
         this.physics.startSystem(Phaser.Physics.ARCADE);
         
-        // Ass the physics to all game objects
+        // Add the physics to all game objects
         game.world.enableBody = true;
         
         // Add the cursor keys
@@ -216,6 +132,10 @@ var playState = {
             this.playerDown--;
         if (this.player.body.position.y > 400)
             this.player.body.checkCollision.down = true;
+            
+        // Add player death and game restart on touching the game bounds
+        if (this.player.body.position.x < -20 || this.player.body.position.x > 960)
+            this.restart();
     },
     
     levelCreate: function() {
@@ -283,12 +203,3 @@ var playState = {
         
     },
 };
-
-
-
-// Add the 'mainState' and call it 'main'
-game.state.add('mainState', mainState);
-game.state.add('playState', playState); 
-
-// Start the state to actually start the game
-game.state.start('mainState');
