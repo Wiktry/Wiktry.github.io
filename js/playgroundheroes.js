@@ -6,7 +6,9 @@ var playState = {
         this.load.image('wall', 'assets/wall.png');
         this.load.image('lava', 'assets/lava.png');
     },
-
+    
+    
+    
     create: function() { 
         
         // Create a fps variable
@@ -29,8 +31,15 @@ var playState = {
         // Add the physics to all game objects
         game.world.enableBody = true;
         
-        // Add the cursor keys
-        this.cursors = this.input.keyboard.createCursorKeys();
+        // Add the necessary keyboard keys
+        this.keyboardKey = {
+            W: this.input.keyboard.addKey(Phaser.Keyboard.W),
+            A: this.input.keyboard.addKey(Phaser.Keyboard.A),
+            S: this.input.keyboard.addKey(Phaser.Keyboard.S),
+            D: this.input.keyboard.addKey(Phaser.Keyboard.D),
+        };
+        
+        // Below this line is level and character specific functions
         
         // Function that creates the player sprite and places it
         this.playerCreate();
@@ -43,7 +52,9 @@ var playState = {
         this.playerDown = 0;
         
     },
-
+    
+    
+    
     update: function() {
         
         // Add collision between the player and the ground (floor)
@@ -63,6 +74,8 @@ var playState = {
         
     },
     
+    
+    
     playerCreate: function() {
         
         // Add the player sprite
@@ -78,13 +91,15 @@ var playState = {
         this.player.body.checkCollision.right = false;
     },
     
+    
+    
     playerMovement: function() {
         
         // Player movement
-        if (this.cursors.left.isDown && this.playerMove >= -150) {
+        if (this.keyboardKey.A.isDown && this.playerMove >= -150) {
             this.playerMove -= 10;
         }
-        else if (this.cursors.right.isDown && this.playerMove <= 150) {
+        else if (this.keyboardKey.D.isDown && this.playerMove <= 150) {
             this.playerMove += 10;
         }
         else if (this.playerMove <= 10 && this.playerMove >= -10)
@@ -118,11 +133,11 @@ var playState = {
         game.debug.text("playerMove = " + this.playerMove, 2, 56, "#00ff00");
         
         // Player jumping
-        if (this.cursors.up.isDown && this.player.body.touching.down)
+        if (this.keyboardKey.W.isDown && this.player.body.touching.down)
             this.player.body.velocity.y = -350;
         
         // Player going down through platforms
-        if (this.cursors.down.isDown && this.player.body.position.y < 375){
+        if (this.keyboardKey.S.isDown && this.player.body.position.y < 375){
             this.player.body.checkCollision.down = false;
             this.playerDown = 5;
         }
@@ -137,6 +152,8 @@ var playState = {
         if (this.player.body.position.x < -20 || this.player.body.position.x > 960)
             this.restart();
     },
+    
+    
     
     levelCreate: function() {
         
@@ -184,10 +201,14 @@ var playState = {
         }
     },
     
+    
+    
     restart: function() {
         game.state.start('playState');
         this.playerMove = 0;
     },
+    
+    
     
     Debug: function() {
         // Add the mouse position to variables
