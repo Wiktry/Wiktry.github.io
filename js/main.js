@@ -7,8 +7,10 @@ var mainState = {
         // This function will be executed at the beginning     
         // That's where we load the images and sounds
         
-        this.load.atlas('playButton', 'assets/textureAtlas.png', 'assets/textureAtlas.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
-        this.load.image('logo', 'assets/Logo.png');
+        this.load.atlas('playButton', 'assets/SpriteSheets/playButton.png', 'assets/SpriteSheets/playButton.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
+        this.load.atlas('optionsButton', 'assets/SpriteSheets/optionsButton.png', 'assets/SpriteSheets/optionsButton.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
+        this.load.image('logo', 'assets/SingleSprites/logo.png');
+        this.load.image('mainMenuBack', 'assets/SingleSprites/mainMenuBack.png');
         
     },
     
@@ -27,11 +29,17 @@ var mainState = {
         // Stage background color
         this.stage.backgroundColor = '#3C9BBA';
         
+        // Main menu background
+        this.mainMenuBack = this.add.image(this.world.centerX - 240, this.world.centerY - 135, 'mainMenuBack');
+        
         // Button to start the game
-        this.playButton = this.add.button(this.world.centerX - 50, 400, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
+        this.playButton = this.add.button(this.world.centerX - 35.5, this.world.centerY - 26, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
+        
+        // Options button
+        this.optionsButton = this.add.button(this.world.centerX - 55, this.world.centerY + 26, 'optionsButton', this.playButtonClick, this, 'optionsButtonHoover.png', 'optionsButton.png', 'optionsButtonHoover.png');
         
         // Logo
-        this.logo = this.add.image(this.world.centerX -190, 100, 'logo');
+        this.logo = this.add.image(this.world.centerX -121, this.world.centerY - 80, 'logo');
         
         // Enable the keyboard
         this.enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);

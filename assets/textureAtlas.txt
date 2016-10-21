@@ -1,2 +1,0 @@
-PlayButton = 0 0 100 40
-PlayButtonHoover = 0 41 100 40
