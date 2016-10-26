@@ -33,7 +33,7 @@ var mainState = {
         this.mainMenuBack = this.add.image(this.world.centerX - 240, this.world.centerY - 135, 'mainMenuBack');
         
         // Button to start the game
-        this.playButton = this.add.button(this.world.centerX - 35.5, this.world.centerY - 26, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
+        this.playButton = this.add.button(this.world.centerX - 35, this.world.centerY - 26, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
         
         // Options button
         this.optionsButton = this.add.button(this.world.centerX - 55, this.world.centerY + 26, 'optionsButton', this.playButtonClick, this, 'optionsButtonHoover.png', 'optionsButton.png', 'optionsButtonHoover.png');
