@@ -76,7 +76,6 @@ var mainState = {
     
     playButtonClick: function() {
         // Changes to the 'playGame' state
-        
         game.state.start('playState');
     },
     
@@ -86,7 +85,7 @@ var mainState = {
 };
 
 // Initialize Phaser, and create a 960px by 640px game
-var game = new Phaser.Game(960, 540);
+var game = new Phaser.Game(960, 540, Phaser.AUTO, 'Stage', null, false, false);
 
 // Add the 'mainState' and call it 'main'
 game.state.add('mainState', mainState);
