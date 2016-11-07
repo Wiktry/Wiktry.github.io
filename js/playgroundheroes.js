@@ -32,16 +32,8 @@ var playState = {
         // Add the physics to all game objects
         game.world.enableBody = true;
         
-        // Add the necessary keyboard keys
-        this.keyboardKey = {
-            W: this.input.keyboard.addKey(Phaser.Keyboard.W),
-            A: this.input.keyboard.addKey(Phaser.Keyboard.A),
-            S: this.input.keyboard.addKey(Phaser.Keyboard.S),
-            D: this.input.keyboard.addKey(Phaser.Keyboard.D),
-        };
-        
-        // Add the cursor keys
-        this.cursors = game.input.keyboard.createCursorKeys();
+        // Create all the input keys
+        this.inputCreate();
         
         // Below this line is level and character specific functions
         
@@ -86,6 +78,94 @@ var playState = {
     },
     
     
+    // Create functions
+    
+    
+    inputCreate: function() {
+        
+        // Add the cursor keys
+        this.cursors = game.input.keyboard.createCursorKeys();
+        
+        // Add the necessary keyboard keys
+        this.keyboardKey = {
+            A: this.input.keyboard.addKey(Phaser.Keyboard.A),
+            B: this.input.keyboard.addKey(Phaser.Keyboard.B),
+            C: this.input.keyboard.addKey(Phaser.Keyboard.C),
+            D: this.input.keyboard.addKey(Phaser.Keyboard.D),
+            E: this.input.keyboard.addKey(Phaser.Keyboard.E),
+            F: this.input.keyboard.addKey(Phaser.Keyboard.F),
+            G: this.input.keyboard.addKey(Phaser.Keyboard.G),
+            H: this.input.keyboard.addKey(Phaser.Keyboard.H),
+            I: this.input.keyboard.addKey(Phaser.Keyboard.I),
+            J: this.input.keyboard.addKey(Phaser.Keyboard.J),
+            K: this.input.keyboard.addKey(Phaser.Keyboard.K),
+            L: this.input.keyboard.addKey(Phaser.Keyboard.L),
+            M: this.input.keyboard.addKey(Phaser.Keyboard.M),
+            N: this.input.keyboard.addKey(Phaser.Keyboard.N),
+            O: this.input.keyboard.addKey(Phaser.Keyboard.O),
+            P: this.input.keyboard.addKey(Phaser.Keyboard.P),
+            Q: this.input.keyboard.addKey(Phaser.Keyboard.Q),
+            R: this.input.keyboard.addKey(Phaser.Keyboard.R),
+            S: this.input.keyboard.addKey(Phaser.Keyboard.S),
+            T: this.input.keyboard.addKey(Phaser.Keyboard.T),
+            U: this.input.keyboard.addKey(Phaser.Keyboard.U),
+            V: this.input.keyboard.addKey(Phaser.Keyboard.V),
+            W: this.input.keyboard.addKey(Phaser.Keyboard.W),
+            X: this.input.keyboard.addKey(Phaser.Keyboard.X),
+            Y: this.input.keyboard.addKey(Phaser.Keyboard.Y),
+            Z: this.input.keyboard.addKey(Phaser.Keyboard.Z),
+        };
+        
+        // Add gamepad input
+        
+        
+    },
+    
+     levelCreate: function() {
+        
+        // Decide the the level to create and add it to 'levelToBuild'
+        if (levelDecide == 1)
+            this.levelToBuild = Atlantis;
+        else if (levelDecide == 2)
+            this.levelToBuild = Aether;
+        else if (levelDecide == 3)
+            this.levelToBuild = Flatlands;
+        
+        // Add the walls group and the lava group
+        this.floors = game.add.group();
+        this.walls = game.add.group();
+        this.enemies = game.add.group();
+        
+        // I need to rebuild the whole block and either move it to another doc or 
+        // figure out a way of making it smaller
+        // Gets the level info from 'levelDecide' and builds the right level
+        // Creates the level
+        for(var i = 0; i < this.levelToBuild.length; i++){
+            for(var j = 0; j < this.levelToBuild[i].length; j++){
+                
+                // Create the floor
+                if (this.levelToBuild[i][j] == 'f'){
+                    var floor = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                    this.floors.add(floor);
+                    floor.body.immovable = true;
+                }
+                
+                // Create the walls
+                if (this.levelToBuild[i][j] == 'x'){
+                    var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                    this.walls.add(wall);
+                    wall.body.immovable = true;
+                }   
+                    
+                // Create the enemies, the blocks that restarts the game
+                if (this.levelToBuild[i][j] == 'o'){
+                    var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
+                    this.enemies.add(lava);
+                    lava.body.immovable = true;
+                } 
+            }
+        }
+    },
     
     playerCreate: function(playerNumb) {
         
@@ -118,6 +198,8 @@ var playState = {
         }
     },
     
+    
+    // Update functions
     
     
     playerMovement: function() {
@@ -240,56 +322,6 @@ var playState = {
         if (this.player2.body.position.x < -20 || this.player2.body.position.x > 960)
             this.restart();
     },
-    
-    
-    
-    levelCreate: function() {
-        
-        // Decide the the level to create and add it to 'levelToBuild'
-        if (levelDecide == 1)
-            this.levelToBuild = Atlantis;
-        else if (levelDecide == 2)
-            this.levelToBuild = Aether;
-        else if (levelDecide == 3)
-            this.levelToBuild = Flatlands;
-        
-        // Add the walls group and the lava group
-        this.floors = game.add.group();
-        this.walls = game.add.group();
-        this.enemies = game.add.group();
-        
-        // I need to rebuild the whole block and either move it to another doc or 
-        // figure out a way of making it smaller
-        // Gets the level info from 'levelDecide' and builds the right level
-        // Creates the level
-        for(var i = 0; i < this.levelToBuild.length; i++){
-            for(var j = 0; j < this.levelToBuild[i].length; j++){
-                
-                // Create the floor
-                if (this.levelToBuild[i][j] == 'f'){
-                    var floor = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
-                    this.floors.add(floor);
-                    floor.body.immovable = true;
-                }
-                
-                // Create the walls
-                if (this.levelToBuild[i][j] == 'x'){
-                    var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
-                    this.walls.add(wall);
-                    wall.body.immovable = true;
-                }   
-                    
-                // Create the enemies, the blocks that restarts the game
-                if (this.levelToBuild[i][j] == 'o'){
-                    var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
-                    this.enemies.add(lava);
-                    lava.body.immovable = true;
-                } 
-            }
-        }
-    },
-    
-    
     
     restart: function() {
         game.state.start('playState');
