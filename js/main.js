@@ -1,23 +1,73 @@
+// Variables that needs to be persistent
+
 // Keeps the information on which level to load
 var levelDecide;
+
+// Options object - big ugly thing
+
+var options = {
+    controls: {
+        player1: {
+            up: null,
+            down: null,
+            left: null,
+            right: null,
+        },
+        player2: {
+            up: null,
+            down: null,
+            left: null,
+            right: null,
+        },
+        player3: {
+            up: null,
+            down: null,
+            left: null,
+            right: null,
+        },
+        player4: {
+            up: null,
+            down: null,
+            left: null,
+            right: null,
+        },
+    },
+    screenSize: {
+        x800y600: {
+            x: 800,
+            y: 600,
+        },
+        x1920y1080: {
+            x: 1920,
+            y: 1080,
+        }
+    }
+};
+
+
 
 // Create the 'mainState' that loads the game and contains the startup menu
 var mainState = {
     preload: function() {
-        // This function will be executed at the beginning     
+        // This function will be executed at the beginning
         // That's where we load the images and sounds
-        
-        this.load.atlas('playButton', 'assets/SpriteSheets/playButton.png', 'assets/SpriteSheets/playButton.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
-        this.load.atlas('optionsButton', 'assets/SpriteSheets/optionsButton.png', 'assets/SpriteSheets/optionsButton.json', Phaser.Loader.TEXTURE_LOADER_JSON_HASH);
-        this.load.image('logo', 'assets/SingleSprites/logo.png');
-        this.load.image('mainMenuBack', 'assets/SingleSprites/mainMenuBack.png');
-        
+
+        /**
+        this.load.spritesheet('playButton', 'assets/menuButtons/finishedButtons/play.png', 230, 24, 2);
+        this.load.spritesheet('optionsButton', 'assets/menuButtons/finishedButtons/options.png', 230, 24, 2);
+         **/
+        this.load.image('logo', 'assets/words/image/blockbattles.png');
+        this.load.spritesheet('playButton', 'assets/words/spritesheet/play.png', 54, 18, 3);
+        this.load.spritesheet('optionsButton', 'assets/words/spritesheet/options.png', 86, 18, 3);
+        this.load.spritesheet('creditsButton', 'assets/words/spritesheet/credits.png', 84, 18, 3);
+        this.load.spritesheet('exitButton', 'assets/words/spritesheet/exit.png', 48, 18, 3);
+
     },
-    
+
     create: function() {
-        // This function is called after the preload function     
+        // This function is called after the preload function
         // Here we set up the game, display sprites, etc.
-        
+
         // Scaling
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
         this.scale.maxWidth = this.scale.Exact_fit;
@@ -25,63 +75,139 @@ var mainState = {
         this.scale.pageAlignHorizontally = true;
         this.scale.pageAlignVertically = true;
         this.scale.setScreenSize = true;
-        
+
         // Stage background color
-        this.stage.backgroundColor = '#3C9BBA';
-        
-        // Main menu background
-        this.mainMenuBack = this.add.image(this.world.centerX - 240, this.world.centerY - 135, 'mainMenuBack');
-        
-        // Button to start the game
-        this.playButton = this.add.button(this.world.centerX - 35, this.world.centerY - 26, 'playButton', this.playButtonClick, this, 'PlayButtonHoover.png', 'PlayButton.png', 'PlayButtonHoover.png');
-        
-        // Options button
-        this.optionsButton = this.add.button(this.world.centerX - 55, this.world.centerY + 26, 'optionsButton', this.playButtonClick, this, 'optionsButtonHoover.png', 'optionsButton.png', 'optionsButtonHoover.png');
-        
-        // Logo
-        this.logo = this.add.image(this.world.centerX -121, this.world.centerY - 80, 'logo');
-        
-        // Enable the keyboard
-        this.enter = this.input.keyboard.addKey(Phaser.Keyboard.ENTER);
-        this.backspace = this.input.keyboard.addKey(Phaser.Keyboard.BACKSPACE);
-        this.home = this.input.keyboard.addKey(Phaser.Keyboard.HOME);
-        
+        this.stage.backgroundColor = '#56abec';
+
+        // Create the inputs
+        this.inputCreate();
+
+        // Create the main menu
+        this.mainMenu();
+
     },
-    
+
     update: function() {
-        // This function is called 60 times per second    
+        // This function is called 60 times per second
         // It contains the game's logic
-        
+
         // Keyboard shortcuts to start the game
         this.keyboardShorts();
-        
+
     },
-    
+
+    inputCreate: function() {
+
+        // Add the keyboard Keys
+        this.keyboardKey = keyBinding(null, true);
+
+        // Add the cursor Keys
+        this.cursors = keyBinding(true, null);
+
+        // Add input to the options object **TEMPORARY**
+        options.controls.player1.left = this.keyboardKey.A;
+        options.controls.player1.right = this.keyboardKey.D;
+        options.controls.player1.up = this.keyboardKey.W;
+        options.controls.player1.down = this.keyboardKey.S;
+
+    },
+
+
+    // Create functions for the different menus
+
+
+    // Create function for the main menu
+    mainMenu: function () {
+
+        // Main menu background
+        // this.mainMenuBack = this.add.image(this.world.centerX - 240, this.world.centerY - 135, 'mainMenuBack');
+
+        // Logo
+        this.logo = this.add.image( 60, 60, 'logo');
+        this.logo.scale.setTo(2.5, 2.5);
+
+        // Create the buttons
+        this.buttonCreate();
+
+        // Draw the menu graphics
+        this.drawMenuGraphics();
+    },
+
     keyboardShorts: function() {
         // Keyboard shortcuts to start the game
-        
-        if(this.enter.isDown){
+
+        if(this.keyboardKey.enter.isDown){
             levelDecide = 1;
-            this.playButtonClick();
+            game.state.start('playState');
         }
-        if(this.backspace.isDown){
+        if(this.keyboardKey.backspace.isDown){
             levelDecide = 2;
-            this.playButtonClick();
+            game.state.start('playState');
         }
-        if(this.home.isDown){
+        if(this.keyboardKey.home.isDown){
             levelDecide = 3;
-            this.playButtonClick();
+            game.state.start('playState');
         }
     },
-    
+
+    // Create all the menu buttons
+    buttonCreate: function () {
+
+        // Create the menu buttons
+        if (this.playButton == null)
+            this.playButton = this.add.button(60, this.world.centerY - 48, 'playButton', this.playButtonClick, this, 1, 0, 2, 0);
+
+        if (this.optionsButton == null)
+            this.optionsButton = this.add.button(60, this.world.centerY - 0, 'optionsButton', this.optionsButtonClick, this, 1, 0, 2, 0);
+
+        if (this.creditsButton == null)
+            this.creditsButton = this.add.button(60, this.world.centerY + 48, 'creditsButton', this.creditsButtonClick, this, 1, 0, 2, 0);
+
+        if (this.exitButton == null)
+            this.exitButton = this.add.button(60, this.world.centerY + 96, 'exitButton', this.exitButtonClick, this, 1, 0, 2, 0);
+
+        // Scale up the buttons
+        this.playButton.scale.setTo(2,2);
+        this.optionsButton.scale.setTo(2,2);
+        this.creditsButton.scale.setTo(2,2);
+        this.exitButton.scale.setTo(2,2);
+    },
+
     playButtonClick: function() {
-        // Changes to the 'playGame' state
-        game.state.start('playState');
+
     },
-    
-    playButtonOver: function() {
-        
+
+    optionsButtonClick: function () {
+
     },
+
+    creditsButtonClick: function () {
+
+    },
+
+    exitButtonClick: function () {
+
+    },
+
+    drawMenuGraphics: function () {
+
+        // Create graphics
+        this.graphics = this.add.graphics(0, 0);
+        this.graphics.beginFill(0xFF3300);
+
+        // Create the menu box on the right side
+        this.graphics.moveTo(480, 0);
+        this.graphics.lineTo(960, 0);
+        this.graphics.lineTo(960, 600);
+        this.graphics.lineTo(480, 600);
+    },
+
+    debug: function () {
+
+        for (var prop in this.keyboardKey) {
+            console.log("keybordKey" + prop + " = " + this.keyboardKey[prop]);
+        }
+    }
 };
 
 // Initialize Phaser, and create a 960px by 640px game
