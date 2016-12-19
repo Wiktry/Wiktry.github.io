@@ -5,6 +5,7 @@ var playState = {
         this.load.image('player', 'assets/player.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('lava', 'assets/lava.png');
+        this.load.image('jumpPad', 'assets/jumpPad.png');
         this.alphabet = this.load.atlas('alphabet', 'assets/spritesheets/alphabet.png', 'assets/spritesheets/alphabet.json');
     },
 
@@ -62,7 +63,7 @@ var playState = {
 
         // AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
         if (this.keyboardKey.G.isDown)
-            text = null;
+
 
         if (this.keyboardKey.H.isDown)
             text = this.textCreate('Det trodde du allt', 100, 100);
@@ -97,6 +98,7 @@ var playState = {
         this.floors = game.add.group();
         this.walls = game.add.group();
         this.enemies = game.add.group();
+        this.jumpPad = game.add.group();
 
         // I need to rebuild the whole block and either move it to another doc or
         // figure out a way of making it smaller
@@ -111,56 +113,44 @@ var playState = {
                     this.floors.add(floor);
                     floor.body.immovable = true;
                 }
-
                 // Create the walls
-                if (this.levelToBuild[i][j] == 'x'){
+                else if (this.levelToBuild[i][j] == 'x'){
                     var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
                     this.walls.add(wall);
                     wall.body.immovable = true;
                 }
-
                 // Create the enemies, the blocks that restarts the game
-                if (this.levelToBuild[i][j] == 'o'){
+                else if (this.levelToBuild[i][j] == 'o'){
                     var lava = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
                     this.enemies.add(lava);
                     lava.body.immovable = true;
+                }
+                // Create jumpPads
+                else if (this.levelToBuild[i][j] == 'e'){
+                    var jumpPad = this.game.add.sprite(30+20*j, 30+20*i, 'jumpPad');
+                    this.jumpPad.add(jumpPad);
+                    jumpPad.body.immovable = true;
                 }
             }
         }
     },
 
-    playerCreate: function(playerNumb) {
+    playerCreate: function() {
 
-        // Create player 1 and 2
-        if (playerNumb == 1) {
-            // Add the player sprite
-            this.player = this.add.sprite(120, 390, 'player');
+        // Add the player sprite
+        this.player = this.add.sprite(120, 390, 'player');
 
-            // Move the players anchor point to the center
-            this.player.anchor.setTo(0.5, 0.5);
+        // Move the players anchor point to the center
+        this.player.anchor.setTo(0.5, 0.5);
 
-            // Enable physics for the player
-            this.physics.arcade.enable(this.player);
+        // Enable physics for the player
+        this.physics.arcade.enable(this.player);
 
-            // Add gravity to the player
-            this.player.body.gravity.y = 600;
-            this.player.body.checkCollision.up = false;
-            this.player.body.checkCollision.left = false;
-            this.player.body.checkCollision.right = false;
-        }
-        else if (playerNumb == 2) {
-            // Add the player sprite
-            this.player2 = this.add.sprite(820, 390, 'player2');
-
-            // Enable physics for the player
-            this.physics.arcade.enable(this.player2);
-
-            // Add gravity to the player
-            this.player2.body.gravity.y = 600;
-            this.player2.body.checkCollision.up = false;
-            this.player2.body.checkCollision.left = false;
-            this.player2.body.checkCollision.right = false;
-        }
+        // Add gravity to the player
+        this.player.body.gravity.y = 600;
+        this.player.body.checkCollision.up = false;
+        this.player.body.checkCollision.left = false;
+        this.player.body.checkCollision.right = false;
     },
 
     textCreate: function (string, posX, posY) {
@@ -208,6 +198,9 @@ var playState = {
 
         // Add overlap between the player and lava, when they touch, restart the game
         this.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
+
+        // If the player touches the jumpPad
+        this.physics.arcade.overlap(this.player, this.jumpPad, this.jumpPadFunc, null, this);
 
         // Player movement
         this.playerMovement();
@@ -282,6 +275,16 @@ var playState = {
         // Add player death and game restart on touching the game bounds
         if (this.player.body.position.x < -20 || this.player.body.position.x > 960)
             this.restart();
+    },
+
+
+    // Game event functions
+
+
+    jumpPadFunc: function () {
+
+        this.player.body.velocity.y = -500;
+
     },
 
     restart: function() {
