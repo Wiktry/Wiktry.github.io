@@ -25,13 +25,13 @@ var Atlantis = [
     '                                             ',
     '                                             ',
     '                                             ',
-    '    fffff  ffff   eeeeeeeee   ffff  fffff    ',
+    '    ffffl  ffff   efffffffe   ffff  fffff    ',
     '                                             ',
     '                                             ',
     '                                             ',
     '                                             ',
     '                                             ',
-    'oooooooooeeoooooooooooooooooooooooeeooooooooooo',
+    'ooooooooooooooooooooooooooooooooooooooooooooo',
 ];
 
 // Level identifier '2'

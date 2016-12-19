@@ -6,6 +6,7 @@ var playState = {
         this.load.image('wall', 'assets/wall.png');
         this.load.image('lava', 'assets/lava.png');
         this.load.image('jumpPad', 'assets/jumpPad.png');
+        this.load.image('launchPad', 'assets/launchPad.png');
         this.alphabet = this.load.atlas('alphabet', 'assets/spritesheets/alphabet.png', 'assets/spritesheets/alphabet.json');
     },
 
@@ -49,6 +50,9 @@ var playState = {
         this.playerMove = 0;
         this.playerDown = 0;
 
+        this.curPos;
+        this.futPos;
+
     },
 
 
@@ -61,13 +65,16 @@ var playState = {
         // Debug function
         this.Debug();
 
+        /**
         // AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
-        if (this.keyboardKey.G.isDown)
-
+        if (this.keyboardKey.G.isDown) {
+            text = null;
+            game.world.removeAll(true);
+        }
 
         if (this.keyboardKey.H.isDown)
             text = this.textCreate('Det trodde du allt', 100, 100);
-
+         **/
 
     },
 
@@ -84,7 +91,7 @@ var playState = {
         this.keyboardKey = keyBinding(null, true);
     },
 
-     levelCreate: function() {
+    levelCreate: function() {
 
         // Decide the the level to create and add it to 'levelToBuild'
         if (levelDecide == 1)
@@ -99,6 +106,7 @@ var playState = {
         this.walls = game.add.group();
         this.enemies = game.add.group();
         this.jumpPad = game.add.group();
+        this.launchPad = game.add.group();
 
         // I need to rebuild the whole block and either move it to another doc or
         // figure out a way of making it smaller
@@ -130,6 +138,12 @@ var playState = {
                     var jumpPad = this.game.add.sprite(30+20*j, 30+20*i, 'jumpPad');
                     this.jumpPad.add(jumpPad);
                     jumpPad.body.immovable = true;
+                }
+                // Create launchPads
+                else if (this.levelToBuild[i][j] == 'l'){
+                    var launchPad = this.game.add.sprite(30+20*j, 30+20*i, 'launchPad');
+                    this.launchPad.add(launchPad);
+                    launchPad.body.immovable = true;
                 }
             }
         }
@@ -185,6 +199,7 @@ var playState = {
 
     },
 
+
     // Update functions
 
 
@@ -201,6 +216,9 @@ var playState = {
 
         // If the player touches the jumpPad
         this.physics.arcade.overlap(this.player, this.jumpPad, this.jumpPadFunc, null, this);
+
+        // If the player touches the launchPad
+        this.physics.arcade.overlap(this.player, this.launchPad, this.launchPadFunc, null, this, this.curPos = 180, this.futPos = 500);
 
         // Player movement
         this.playerMovement();
@@ -272,6 +290,17 @@ var playState = {
         if (this.player.body.position.y > 400)
             this.player.body.checkCollision.down = true;
 
+        // If the player was launched with a launch platform
+        if (this.playerLaunched === true) {
+            if (this.player.body.touching.down === true && this.wait > 5)
+                this.playerLaunched = false;
+            else {
+                this.wait++;
+                this.player.position.x += 6;
+                this.playerMove = 0;
+            }
+        }
+
         // Add player death and game restart on touching the game bounds
         if (this.player.body.position.x < -20 || this.player.body.position.x > 960)
             this.restart();
@@ -284,6 +313,22 @@ var playState = {
     jumpPadFunc: function () {
 
         this.player.body.velocity.y = -500;
+
+    },
+
+    launchPadFunc: function launchPadFunc () {
+
+        this.player.body.velocity.y = -500;
+
+        this.playerLaunched = true;
+
+        this.wait = 0;
+
+        /**
+        for (var i = this.curPos; i < this.futPos; i++) {
+            this.player.body.position.x = i;
+        }
+         **/
 
     },
 
