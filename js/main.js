@@ -3,6 +3,9 @@
 // Keeps the information on which level to load
 var levelDecide;
 
+// All the fucking text
+var text;
+
 // Options object - big ugly thing
 
 var options = {

@@ -1,7 +1,3 @@
-/**
- * Created by General on 2016-12-09.
- */
-
 function keyBinding(cursor, keyboard) {
 
     // Add the cursor keys
@@ -49,8 +45,8 @@ function keyBinding(cursor, keyboard) {
 
         return this.keyboardKey;
     }
-};
+}
 
 function keyRebinding(keyToRebind, currentKey) {
 
-};
+}
