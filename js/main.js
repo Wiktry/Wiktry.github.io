@@ -3,11 +3,7 @@
 // Keeps the information on which level to load
 var levelDecide;
 
-// All the fucking text
-var text;
-
 // Options object - big ugly thing
-
 var options = {
     controls: {
         player1: {
@@ -21,19 +17,7 @@ var options = {
             down: null,
             left: null,
             right: null,
-        },
-        player3: {
-            up: null,
-            down: null,
-            left: null,
-            right: null,
-        },
-        player4: {
-            up: null,
-            down: null,
-            left: null,
-            right: null,
-        },
+        }
     },
     screenSize: {
         x800y600: {
@@ -44,6 +28,12 @@ var options = {
             x: 1920,
             y: 1080,
         }
+    },
+    volume: {
+        master: 0,
+        music: 0,
+        effects: 0,
+        voice: 0,
     }
 };
 
@@ -112,6 +102,10 @@ var mainState = {
         options.controls.player1.right = this.keyboardKey.D;
         options.controls.player1.up = this.keyboardKey.W;
         options.controls.player1.down = this.keyboardKey.S;
+        options.controls.player2.left = this.keyboardKey.J;
+        options.controls.player2.right = this.keyboardKey.L;
+        options.controls.player2.up = this.keyboardKey.I;
+        options.controls.player2.down = this.keyboardKey.K;
 
     },
 

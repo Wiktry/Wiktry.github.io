@@ -4,6 +4,7 @@
     <list default="true" id="1f19246d-1ee1-4807-861a-03133ee178a8" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/blockbattles.js" afterPath="$PROJECT_DIR$/js/blockbattles.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -29,7 +30,7 @@
           <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/index.html">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-4">
+                <state relative-caret-position="16">
                   <caret line="1" column="6" lean-forward="false" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
                   <folding>
                     <element signature="n#script#2;n#head#0;n#html#0;n#!!top" expanded="false" />
@@ -41,8 +42,8 @@
           <file leaf-file-name="main.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/main.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-864">
-                  <caret line="216" column="49" lean-forward="false" selection-start-line="216" selection-start-column="49" selection-end-line="216" selection-end-column="49" />
+                <state relative-caret-position="1664">
+                  <caret line="104" column="58" lean-forward="false" selection-start-line="104" selection-start-column="58" selection-end-line="104" selection-end-column="58" />
                   <folding />
                 </state>
               </provider>
@@ -51,9 +52,11 @@
           <file leaf-file-name="blockbattles.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/blockbattles.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="202">
-                  <caret line="188" column="4" lean-forward="false" selection-start-line="188" selection-start-column="4" selection-end-line="188" selection-end-column="4" />
-                  <folding />
+                <state relative-caret-position="748">
+                  <caret line="412" column="12" lean-forward="false" selection-start-line="412" selection-start-column="12" selection-end-line="412" selection-end-column="12" />
+                  <folding>
+                    <element signature="e#5886#7049#0" expanded="false" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -61,7 +64,7 @@
           <file leaf-file-name="keyBinding.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/js/keyBinding.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="-200">
+                <state relative-caret-position="800">
                   <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
                   <folding />
                 </state>
@@ -85,7 +88,7 @@
           <file leaf-file-name="levelDesign.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/js/levelDesign.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="174">
+                <state relative-caret-position="462">
                   <caret line="33" column="39" lean-forward="false" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
@@ -111,10 +114,15 @@
       <find>this.playermove</find>
       <find>this.playermove.isDown</find>
       <find>specialBlocks</find>
+      <find>player</find>
+      <find>player1move</find>
     </findStrings>
     <replaceStrings>
       <replace>game</replace>
       <replace>jumpPad</replace>
+      <replace>player1move</replace>
+      <replace>player2Move</replace>
+      <replace>player1Move</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -125,8 +133,8 @@
       <list>
         <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/js/keyBinding.js" />
-        <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/js/levelDesign.js" />
+        <option value="$PROJECT_DIR$/js/main.js" />
         <option value="$PROJECT_DIR$/js/blockbattles.js" />
       </list>
     </option>
@@ -289,16 +297,24 @@
       <workItem from="1482143766277" duration="4499000" />
       <workItem from="1482150958647" duration="2992000" />
       <workItem from="1482175967803" duration="764000" />
-      <workItem from="1483021659383" duration="372000" />
+      <workItem from="1483021659383" duration="2549000" />
     </task>
+    <task id="LOCAL-00001" summary="Test commit">
+      <created>1483022076985</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1483022076985</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="23345000" />
+    <option name="totallyTimeSpent" value="25522000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="32" width="1936" height="1056" extended-state="6" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1203125" sideWeight="0.5" order="0" side_tool="true" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -326,7 +342,8 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="VcsManagerConfiguration">
-    <option name="LAST_COMMIT_MESSAGE" value="" />
+    <MESSAGE value="Test commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="Test commit" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -335,8 +352,14 @@
           <url>file://$PROJECT_DIR$/index.html</url>
           <line>8</line>
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/js/blockbattles.js</url>
+          <line>180</line>
+          <properties />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="1" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -373,7 +396,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="992">
           <caret line="62" column="94" lean-forward="false" selection-start-line="62" selection-start-column="94" selection-end-line="62" selection-end-column="94" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -407,7 +432,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
           <caret line="66" column="39" lean-forward="false" selection-start-line="66" selection-start-column="39" selection-end-line="66" selection-end-column="39" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -441,7 +468,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1122">
           <caret line="66" column="39" lean-forward="false" selection-start-line="66" selection-start-column="39" selection-end-line="66" selection-end-column="39" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -475,7 +504,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2023">
           <caret line="119" column="6" lean-forward="true" selection-start-line="119" selection-start-column="6" selection-end-line="119" selection-end-column="6" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -519,7 +550,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -553,7 +586,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1168">
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -587,7 +622,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1168">
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -621,7 +658,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1168">
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -655,7 +694,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1168">
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -689,7 +730,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1168">
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -723,7 +766,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1168">
           <caret line="73" column="46" lean-forward="false" selection-start-line="73" selection-start-column="46" selection-end-line="73" selection-end-column="46" />
-          <folding />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -735,17 +780,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/keyBinding.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-200">
-          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/js/levelDesign.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="174">
+        <state relative-caret-position="462">
           <caret line="33" column="39" lean-forward="false" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
@@ -755,7 +792,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-4">
+        <state relative-caret-position="16">
           <caret line="1" column="6" lean-forward="false" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
           <folding>
             <element signature="n#script#2;n#head#0;n#html#0;n#!!top" expanded="false" />
@@ -763,19 +800,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/js/keyBinding.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="800">
+          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/js/main.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-864">
-          <caret line="216" column="49" lean-forward="false" selection-start-line="216" selection-start-column="49" selection-end-line="216" selection-end-column="49" />
+        <state relative-caret-position="1664">
+          <caret line="104" column="58" lean-forward="false" selection-start-line="104" selection-start-column="58" selection-end-line="104" selection-end-column="58" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/blockbattles.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="188" column="4" lean-forward="false" selection-start-line="188" selection-start-column="4" selection-end-line="188" selection-end-column="4" />
-          <folding />
+        <state relative-caret-position="748">
+          <caret line="412" column="12" lean-forward="false" selection-start-line="412" selection-start-column="12" selection-end-line="412" selection-end-column="12" />
+          <folding>
+            <element signature="e#5886#7049#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

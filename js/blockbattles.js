@@ -3,6 +3,7 @@ var playState = {
     preload: function() {
 
         this.load.image('player', 'assets/player.png');
+        this.load.image('player2', 'assets/player2.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('lava', 'assets/lava.png');
         this.load.image('jumpPad', 'assets/jumpPad.png');
@@ -47,8 +48,10 @@ var playState = {
         this.levelCreate();
 
         // Player movement vars
-        this.playerMove = 0;
-        this.playerDown = 0;
+        this.player1Move = 0;
+        this.player1Down = 0;
+        this.player2Move = 0;
+        this.player2Down = 0;
 
         this.curPos;
         this.futPos;
@@ -64,17 +67,6 @@ var playState = {
 
         // Debug function
         this.Debug();
-
-        /**
-        // A complete pile of fucking shit
-        if (this.keyboardKey.G.isDown) {
-            text = null;
-            game.world.removeAll(true);
-        }
-
-        if (this.keyboardKey.H.isDown)
-            text = this.textCreate('Det trodde du allt', 100, 100);
-         **/
 
     },
 
@@ -169,7 +161,7 @@ var playState = {
 
         // Add player 2
         // Add the player sprite
-        this.player2 = this.add.sprite(120, 390, 'player2');
+        this.player2 = this.add.sprite(420, 390, 'player2');
 
         // Move the players anchor point to the center
         this.player2.anchor.setTo(0.5, 0.5);
@@ -226,62 +218,60 @@ var playState = {
 
         // Add collision between the player and the ground (floor)
         this.physics.arcade.collide(this.player, this.floors);
+        this.physics.arcade.collide(this.player2, this.floors);
 
         // Add collision between the player and the ground (walls)
         this.physics.arcade.collide(this.player, this.walls);
+        this.physics.arcade.collide(this.player2, this.walls);
 
         // Add overlap between the player and lava, when they touch, restart the game
         this.physics.arcade.overlap(this.player, this.enemies, this.restart, null, this);
+        this.physics.arcade.overlap(this.player2, this.enemies, this.restart, null, this);
 
         // If the player touches the jumpPad
         this.physics.arcade.overlap(this.player, this.jumpPad, this.jumpPadFunc, null, this);
+        this.physics.arcade.overlap(this.player2, this.jumpPad, this.jumpPadFunc, null, this);
 
         // If the player touches the launchPad
         this.physics.arcade.overlap(this.player, this.launchPad, this.launchPadFunc, null, this, this.curPos = 180, this.futPos = 500);
+        this.physics.arcade.overlap(this.player2, this.launchPad, this.launchPadFunc, null, this, this.curPos = 180, this.futPos = 500);
 
         // Player movement
         this.playerMovement();
+        this.player2Movement();
 
     },
 
     playerMovement: function() {
 
         // Player movement
-        if (options.controls.player1.left.isDown && this.playerMove >= -150) {
-            this.playerMove -= 10;
+        if (options.controls.player1.left.isDown && this.player1Move >= -150) {
+            this.player1Move -= 10;
         }
-        else if (options.controls.player1.right.isDown && this.playerMove <= 150) {
-            this.playerMove += 10;
+        else if (options.controls.player1.right.isDown && this.player1Move <= 150) {
+            this.player1Move += 10;
         }
-        else if (this.playerMove <= 10 && this.playerMove >= -10)
-            // set 'playerMove' to 0 when it is between 10 and -10, to stop it from getting stuck on 6 or 2
-            this.playerMove = 0;
+        else if (this.player1Move <= 10 && this.player1Move >= -10)
+            // set 'player1Move' to 0 when it is between 10 and -10, to stop it from getting stuck on 6 or 2
+            this.player1Move = 0;
         else if (this.player.body.touching.down) {
             // Player loses speed over time when button is not pressed
             // Friction when player is on the ground
-            if (this.playerMove < 0)
-                this.playerMove += 8;
-            if (this.playerMove > 0)
-                this.playerMove -= 8;
+            if (this.player1Move < 0)
+                this.player1Move += 8;
+            if (this.player1Move > 0)
+                this.player1Move -= 8;
         }
         else {
             // Losses speed slower in the air
-            if (this.playerMove < 0)
-                this.playerMove += 2;
-            if (this.playerMove > 0)
-                this.playerMove -= 2;
+            if (this.player1Move < 0)
+                this.player1Move += 2;
+            if (this.player1Move > 0)
+                this.player1Move -= 2;
         }
 
-        // Set the movement speed to the var 'playerMove'
-        if (this.playerMove < 0)
-            this.player.body.velocity.x = this.playerMove;
-        else if (this.playerMove > 0)
-            this.player.body.velocity.x = this.playerMove;
-        else
-            this.player.body.velocity.x = 0;
-
         // Player's current movespeed
-        game.debug.text("playerMove = " + this.playerMove, 2, 56, "#00ff00");
+        game.debug.text("player1Move = " + this.player1Move, 2, 56, "#00ff00");
 
         // Player jumping
         if (options.controls.player1.up.isDown && this.player.body.touching.down)
@@ -316,12 +306,101 @@ var playState = {
             else {
                 this.wait++;
                 this.player.position.x += 6;
-                this.playerMove = 0;
+                this.player1Move = 0;
             }
         }
 
+        // Set the movement speed to the var 'player1Move'
+        if (this.player1Move < 0)
+            this.player.body.velocity.x = this.player1Move;
+        else if (this.player1Move > 0)
+            this.player.body.velocity.x = this.player1Move;
+        else
+            this.player.body.velocity.x = 0;
+
         // Add player death and game restart on touching the game bounds
         if (this.player.body.position.x < -20 || this.player.body.position.x > 960)
+            this.restart();
+    },
+
+    player2Movement: function() {
+
+        // Player movement
+        if (options.controls.player2.left.isDown && this.player2Move >= -150) {
+            this.player2Move -= 10;
+        }
+        else if (options.controls.player2.right.isDown && this.player2Move <= 150) {
+            this.player2Move += 10;
+        }
+        else if (this.player2Move <= 10 && this.player2Move >= -10)
+            // set 'player2Move' to 0 when it is between 10 and -10, to stop it from getting stuck on 6 or 2
+            this.player2Move = 0;
+        else if (this.player2.body.touching.down) {
+            // Player loses speed over time when button is not pressed
+            // Friction when player is on the ground
+            if (this.player2Move < 0)
+                this.player2Move += 8;
+            if (this.player2Move > 0)
+                this.player2Move -= 8;
+        }
+        else {
+            // Losses speed slower in the air
+            if (this.player2Move < 0)
+                this.player2Move += 2;
+            if (this.player2Move > 0)
+                this.player2Move -= 2;
+        }
+
+        // Player's current movespeed
+        game.debug.text("player2Move = " + this.player2Move, 2, 56, "#00ff00");
+
+        // Player jumping
+        if (options.controls.player2.up.isDown && this.player2.body.touching.down)
+            this.player2.body.velocity.y = -350;
+
+        // Angle when player jumps
+        if (this.player2.body.touching.down === false && this.player2.body.velocity.x > 1)
+            this.player2.angle += 2;
+        else if (this.player2.body.touching.down === false && this.player2.body.velocity.x < -1)
+            this.player2.angle -= 2;
+        else if (this.player2.body.touching.down === false)
+            this.player2.angle++;
+        else
+            this.player2.angle = 0;
+
+        // Player going down through platforms
+        if (options.controls.player2.down.isDown && this.player2.body.position.y < 375){
+            this.player2.body.checkCollision.down = false;
+            this.playerDown = 5;
+        }
+        else if (this.playerDown < 2)
+            this.player2.body.checkCollision.down = true;
+        else if (this.playerDown > 0)
+            this.playerDown--;
+        if (this.player2.body.position.y > 400)
+            this.player2.body.checkCollision.down = true;
+
+        // If the player was launched with a launch platform
+        if (this.playerLaunched === true) {
+            if (this.player2.body.touching.down === true && this.wait > 5)
+                this.playerLaunched = false;
+            else {
+                this.wait++;
+                this.player2.position.x += 6;
+                this.player2Move = 0;
+            }
+        }
+
+        // Set the movement speed to the var 'player2Move'
+        if (this.player2Move < 0)
+            this.player2.body.velocity.x = this.player2Move;
+        else if (this.player2Move > 0)
+            this.player2.body.velocity.x = this.player2Move;
+        else
+            this.player2.body.velocity.x = 0;
+
+        // Add player death and game restart on touching the game bounds
+        if (this.player2.body.position.x < -20 || this.player2.body.position.x > 960)
             this.restart();
     },
 
@@ -329,9 +408,12 @@ var playState = {
     // Game event functions
 
 
-    jumpPadFunc: function () {
+    jumpPadFunc: function (player) {
 
-        this.player.body.velocity.y = -500;
+        if ()
+            this.player.body.velocity.y = -500;
+        else
+            this.player2.body.velocity.y = -500;
 
     },
 
@@ -353,7 +435,7 @@ var playState = {
 
     restart: function() {
         game.state.start('playState');
-        this.playerMove = 0;
+        this.player1Move = 0;
     },
 
 
