@@ -66,7 +66,7 @@ var playState = {
         this.Debug();
 
         /**
-        // AHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH
+        // A complete pile of fucking shit
         if (this.keyboardKey.G.isDown) {
             text = null;
             game.world.removeAll(true);
@@ -151,6 +151,7 @@ var playState = {
 
     playerCreate: function() {
 
+        // Add player 1
         // Add the player sprite
         this.player = this.add.sprite(120, 390, 'player');
 
@@ -165,6 +166,24 @@ var playState = {
         this.player.body.checkCollision.up = false;
         this.player.body.checkCollision.left = false;
         this.player.body.checkCollision.right = false;
+
+        // Add player 2
+        // Add the player sprite
+        this.player2 = this.add.sprite(120, 390, 'player2');
+
+        // Move the players anchor point to the center
+        this.player2.anchor.setTo(0.5, 0.5);
+
+        // Enable physics for the player
+        this.physics.arcade.enable(this.player2);
+
+        // Add gravity to the player
+        this.player2.body.gravity.y = 600;
+        this.player2.body.checkCollision.up = false;
+        this.player2.body.checkCollision.left = false;
+        this.player2.body.checkCollision.right = false;
+
+
     },
 
     textCreate: function (string, posX, posY) {
