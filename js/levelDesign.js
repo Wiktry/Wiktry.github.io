@@ -25,7 +25,7 @@ var Atlantis = [
     '                                             ',
     '                                             ',
     '                                             ',
-    '    ffffl  ffff   efffffffe   ffff  fffff    ',
+    '    fffff  ffff   efffffffe   ffff  fffff    ',
     '                                             ',
     '                                             ',
     '                                             ',
