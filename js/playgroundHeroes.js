@@ -1,6 +1,6 @@
 var global = {
     velocity: {
-        playerJumping: -450,
+        playerJumping: -350,
         jumpPad: -500,
     }
 }
@@ -13,8 +13,7 @@ var playState = {
         this.load.image('player2', 'assets/player2.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('lava', 'assets/lava.png');
-        this.load.image('jumpPad', 'assets/jumpPad.png');
-        this.load.image('launchPad', 'assets/launchPad.png');
+        this.load.image('meleeSprite', 'assets/meleeSprite.png');
         this.alphabet = this.load.atlas('alphabet', 'assets/spritesheets/alphabet.png', 'assets/spritesheets/alphabet.json');
     },
 
@@ -49,8 +48,9 @@ var playState = {
         // Below this line is level and character specific functions
 
         // Function that creates the player sprites and places them
-        this.player1 = playerCreate(120, 380, 'player1');
-        this.player2 = playerCreate(840, 380, 'player2')
+        this.player1 = playerCreate(160, 330, 'player1');
+        this.player2 = playerCreate(800, 330, 'player2');
+        this.player2.direction = 1;
 
         // Function that creates the game level
         this.levelCreate();
@@ -210,10 +210,6 @@ var playState = {
         this.physics.arcade.collide(this.player1, this.walls);
         this.physics.arcade.collide(this.player2, this.walls);
 
-        // Add collision between the two players
-        this.physics.arcade.collide(this.player1, this.player2);
-        this.physics.arcade.collide(this.player2, this.player1);
-
         // Add overlap between the player and lava, when they touch, restart the game
         this.physics.arcade.overlap(this.player1, this.enemies, this.restart, null, this);
         this.physics.arcade.overlap(this.player2, this.enemies, this.restart, null, this);
@@ -228,10 +224,8 @@ var playState = {
 
     // Game event functions
 
-
     restart: function() {
         game.state.start('playState');
-        this.player1Move = 0;
     },
 
 
@@ -247,6 +241,10 @@ var playState = {
 
         // Display the fps counter
         game.debug.text("fps = " + game.time.fps, 2, 14, "#00ff00");
+
+        // Display the player health
+        game.debug.text("health1 = " + this.player1.gameHealth, 2, 70, "#00ff00");
+        game.debug.text("health2 = " + this.player2.gameHealth, 2, 84, "#00ff00");
 
     }
 };
@@ -272,6 +270,11 @@ function playerCreate(posX, posY, sprite) {
     player.body.checkCollision.up = false;
     player.body.checkCollision.left = false;
     player.body.checkCollision.right = false;
+
+    // The players health
+    player.gameHealth = 5;
+    // The direction the player is facing
+    player.direction = 0;
 
     return player;
 }
@@ -326,4 +329,16 @@ function playerDown(posY) {
         return true
     else
         return false
+}
+
+// Melee attack
+function meleeAttack(posX, posY, direct, player1, player2) {
+
+    this.attackArea = game.add.sprite(posX, posY, 'meleeSprite');
+
+    if (this.physics.arcade.overlap(player2, this.attackArea) === true)
+        player2.gameHealth =- 1;
+
+
+
 }

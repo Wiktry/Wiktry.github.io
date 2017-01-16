@@ -4,38 +4,28 @@
 // x = walls / o = enemies
         
 // Level identifier '1'
-var Atlantis = [
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '           xxx      xxxxx      xxx           ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '    fffff  ffff   efffffffe   ffff  fffff    ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    'ooooooooooooooooooooooooooooooooooooooooooooo',
+var Aether = [
+    '                                             ',// 0
+    '                                             ',// 20
+    '                                             ',// 40
+    '                                             ',// 60
+    '                                             ',// 80
+    '                                             ',// 100
+    '                                             ',// 120
+    '                                             ',// 140
+    '                                             ',// 160
+    '                                             ',// 180
+    '          xxxx     xxxxxxx     xxxx          ',// 200
+    '                                             ',// 220
+    '                                             ',// 240
+    '  xx                                     xx  ',// 260
+    '                                             ',// 280
+    '                                             ',// 300
+    '    fffff  fff  ee  fffff  ee  fff  fffff    ',// 320
 ];
 
 // Level identifier '2'
-var Aether = [
+var Atlantis = [
     '                                             ',
     '                                             ',
     '                                             ',
