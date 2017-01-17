@@ -49,11 +49,18 @@ var mainState = {
         this.load.spritesheet('playButton', 'assets/menuButtons/finishedButtons/play.png', 230, 24, 2);
         this.load.spritesheet('optionsButton', 'assets/menuButtons/finishedButtons/options.png', 230, 24, 2);
          **/
+
+        // Logo
         this.load.image('logo', 'assets/words/image/blockbattles.png');
+
+        // Main menu buttons
         this.load.spritesheet('playButton', 'assets/words/spritesheet/play.png', 54, 18, 3);
         this.load.spritesheet('optionsButton', 'assets/words/spritesheet/options.png', 86, 18, 3);
         this.load.spritesheet('creditsButton', 'assets/words/spritesheet/credits.png', 84, 18, 3);
         this.load.spritesheet('exitButton', 'assets/words/spritesheet/exit.png', 48, 18, 3);
+
+        // Level Buttons
+        this.load.spritesheet('aether', 'assets/words/spritesheet/aether.png', 78, 18, 3);
 
     },
 
@@ -170,8 +177,24 @@ var mainState = {
         this.exitButton.scale.setTo(2,2);
     },
 
+    buttonDestroy: function () {
+
+        if (this.playButtonMenu != null)
+            this.playButtonMenu.destroy();
+
+    },
+
     playButtonClick: function() {
 
+        this.buttonDestroy();
+
+        this.playButtonMenu = {
+            aether: this.add.button(900-156, this.world.centerY - 48, 'aether', this.playButtonClick, this, 1, 0, 2, 0),
+            atlantis: this.add.button(),
+            flatlands: this.add.button(),
+        }
+
+        this.playButtonMenu.aether.scale.setTo(2,2);
     },
 
     optionsButtonClick: function () {
