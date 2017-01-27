@@ -11,12 +11,18 @@ var options = {
             down: null,
             left: null,
             right: null,
+            attack1: null,
+            attack2: null,
+            block: null,
         },
         player2: {
             up: null,
             down: null,
             left: null,
             right: null,
+            attack1: null,
+            attack2: null,
+            block: null,
         }
     },
     screenSize: {
@@ -35,6 +41,19 @@ var options = {
         effects: 0,
         voice: 0,
     }
+};
+
+// The players chosen character
+var playerChar = {
+    player1: null,
+    player2: null,
+};
+
+// All the different main menu tabs and items, they need to be s I can create and delete them in different functions
+var menuTabs = {
+    play: null,
+    options: null,
+    credits: null,
 };
 
 
@@ -109,10 +128,14 @@ var mainState = {
         options.controls.player1.right = this.keyboardKey.D;
         options.controls.player1.up = this.keyboardKey.W;
         options.controls.player1.down = this.keyboardKey.S;
+        options.controls.player1.attack1 = this.keyboardKey.Q;
+        options.controls.player1.attack2 = this.keyboardKey.E;
         options.controls.player2.left = this.keyboardKey.J;
         options.controls.player2.right = this.keyboardKey.L;
         options.controls.player2.up = this.keyboardKey.I;
         options.controls.player2.down = this.keyboardKey.K;
+        options.controls.player2.attack1 = this.keyboardKey.U;
+        options.controls.player2.attack2 = this.keyboardKey.O;
 
     },
 

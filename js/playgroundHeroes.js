@@ -9,10 +9,16 @@ var global = {
 var playState = {
     preload: function() {
 
+        // Text
+        this.load.image('gameOver', 'assets/words/image/gameOver.png');
+        this.load.image('p1wins', 'assets/words/image/player1wins.png');
+        this.load.image('p2wins', 'assets/words/image/player2wins.png');
+
         this.load.image('player1', 'assets/player.png');
         this.load.image('player2', 'assets/player2.png');
         this.load.image('wall', 'assets/wall.png');
         this.load.image('lava', 'assets/lava.png');
+        this.load.image('jumpPad', 'assets/jumppad.png');
         this.load.image('meleeSprite', 'assets/meleeSprite.png');
         this.alphabet = this.load.atlas('alphabet', 'assets/spritesheets/alphabet.png', 'assets/spritesheets/alphabet.json');
     },
@@ -48,8 +54,8 @@ var playState = {
         // Below this line is level and character specific functions
 
         // Function that creates the player sprites and places them
-        this.player1 = playerCreate(160, 330, 'player1');
-        this.player2 = playerCreate(800, 330, 'player2');
+        this.player1 = playerCreate(160, 320, 'player1');
+        this.player2 = playerCreate(800, 320, 'player2');
         this.player2.direction = 1;
 
         // Function that creates the game level
@@ -65,6 +71,12 @@ var playState = {
 
         // All the player updates
         this.playerUpdate();
+
+        // All the attack updates
+        this.attackUpdate();
+
+        // Game event updates
+        this.gameEvent();
 
         // Debug function
         this.Debug();
@@ -198,6 +210,26 @@ var playState = {
             this.player2.body.checkCollision.down = false;
         else
             this.player2.body.checkCollision.down = true;
+
+        // Player leaving the game area
+        if (this.player1.body.position.y > 540)
+            this.player1.gameHealth = 0;
+        if (this.player2.body.position.y > 540)
+            this.player2.gameHealth = 0;
+    },
+
+    attackUpdate: function () {
+
+        this.attackCooldown = {
+            a1: 0,
+        };
+
+        if (this.attackCooldown.a1)
+            if (options.controls.player1.attack1.isDown)
+                this.player2.gameHealth -= meleeAttack(this.player1, this.player2);
+            if (options.controls.player2.attack1.isDown)
+                this.player1.gameHealth -= meleeAttack(this.player2, this.player1);
+
     },
 
     collisions: function () {
@@ -224,6 +256,32 @@ var playState = {
 
     // Game event functions
 
+    gameEvent: function () {
+
+        // Call game over when health is zero
+        if (this.player1.gameHealth == 0 || this.player2.gameHealth == 0){
+            console.log("Game is over");
+            this.gameOver();
+        }
+
+    },
+
+    gameOver: function () {
+
+        this.afterText = game.add.sprite(game.world.centerX - 212, game.world.centerY - 150, 'gameOver');
+        this.afterText.scale.setTo(4, 4);
+
+        if (this.player1.gameHealth == 0)
+            this.afterText = game.add.sprite(game.world.centerX - 138, game.world.centerY - 50, 'p1wins')
+
+        this.afterText.scale.setTo(2, 2);
+
+
+
+        game.paused = true;
+
+    },
+
     restart: function() {
         game.state.start('playState');
     },
@@ -246,6 +304,8 @@ var playState = {
         game.debug.text("health1 = " + this.player1.gameHealth, 2, 70, "#00ff00");
         game.debug.text("health2 = " + this.player2.gameHealth, 2, 84, "#00ff00");
 
+        game.debug.text("playerPosX = " + this.player1.body.position.x, 2, 98, "#00ff00");
+
     }
 };
 
@@ -256,9 +316,6 @@ function playerCreate(posX, posY, sprite) {
 
     // Add the player sprite to this.player
     var player = game.add.sprite(posX, posY, sprite);
-
-    // Move the players anchor point to the center
-    player.anchor.setTo(0.5, 0.5);
 
     // Enable physics for the player
     game.physics.arcade.enable(player);
@@ -288,10 +345,12 @@ function playerMovement(left, right, playerMove, player) {
     // If the left button is down the player speed will increase to -150
     if (left.isDown && playerMove >= -150) {
         this.playerSpeed -= 10;
+        player.direction = 1;
     }
     // If the right button is down the player speed will increase to 150
     else if (right.isDown && playerMove <= 150) {
         this.playerSpeed += 10;
+        player.direction = 0;
     }
     // set 'player1Move' to 0 when it is between 10 and -10, to stop it from getting stuck on 6 or 2
     else if (playerMove <= 10 && playerMove >= -10)
@@ -314,6 +373,7 @@ function playerMovement(left, right, playerMove, player) {
 
     // Player's current movespeed
     game.debug.text("playerMove = " + this.playerSpeed, 2, 56, "#00ff00");
+    game.debug.text("playerDirection = " + player.direction, 2, 120, "#00ff00");
 
     // Add player death and game restart on touching the game bounds
 //    if (this.player1.body.position.x < -20 || this.player1.body.position.x > 960)
@@ -332,13 +392,29 @@ function playerDown(posY) {
 }
 
 // Melee attack
-function meleeAttack(posX, posY, direct, player1, player2) {
+function meleeAttack(player1, player2) {
 
-    this.attackArea = game.add.sprite(posX, posY, 'meleeSprite');
+    this.hit = 0;
 
-    if (this.physics.arcade.overlap(player2, this.attackArea) === true)
-        player2.gameHealth =- 1;
+    if (player1.direction == 1) {
+        this.posX = player1.body.position.x - 20;
+        this.posY = player1.body.position.y;
+    }
+    else {
+        this.posX = player1.body.position.x + 32;
+        this.posY = player1.body.position.y;
+    }
 
+    this.attackArea = game.add.sprite(this.posX, this.posY, 'meleeSprite');
 
+    if (game.physics.arcade.overlap(player2, this.attackArea) === true)
+        this.hit = 1
+
+    this.attackArea.destroy();
+
+    if (this.hit == 1)
+        return 1;
+    else
+        return 0;
 
 }
