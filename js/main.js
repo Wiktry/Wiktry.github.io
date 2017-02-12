@@ -44,9 +44,11 @@ var options = {
 };
 
 // The players chosen character
-var playerChar = {
+var characterSelect = {
     player1: null,
+    ID1: null,
     player2: null,
+    ID2: null
 };
 
 // All the different main menu tabs and items, they need to be s I can create and delete them in different functions
@@ -136,6 +138,12 @@ var mainState = {
         options.controls.player2.down = this.keyboardKey.K;
         options.controls.player2.attack1 = this.keyboardKey.U;
         options.controls.player2.attack2 = this.keyboardKey.O;
+
+        // Add the sprites and ID to the characterSelect var **TEMPORARY**
+        characterSelect.player1 = 'player1';
+        characterSelect.player2 = 'player2';
+        characterSelect.ID1 = 1;
+        characterSelect.ID2 = 2;
 
     },
 
@@ -254,7 +262,7 @@ var mainState = {
 };
 
 // Initialize Phaser, and create a 960px by 640px game
-var game = new Phaser.Game(960, 540, Phaser.WEBGL, 'Stage', null, false, false);
+var game = new Phaser.Game(960, 540, Phaser.CANVAS, 'Stage', null, false, false);
 
 // Add the 'mainState' and call it 'main'
 game.state.add('mainState', mainState);

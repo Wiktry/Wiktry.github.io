@@ -68,10 +68,45 @@ var Flatlands = [
     '     xxxxxx     xx         xx     xxxxxx     ',
     '                                             ',
     'fffffffffffffffffffffffffffffffffffffffffffff',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    '                                             ',
-    'ooooooooooooooooooooooooooooooooooooooooooooo',    
 ];
+
+function levelCreate(levelDecide, floors, platforms, jumpPads) {
+
+    // Decide the the level to create and add it to 'levelToBuild'
+    if (levelDecide == 1)
+        this.levelToBuild = Atlantis;
+    else if (levelDecide == 2)
+        this.levelToBuild = Aether;
+    else if (levelDecide == 3)
+        this.levelToBuild = Flatlands;
+
+    // I need to rebuild the whole block and either move it to another doc or
+    // figure out a way of making it smaller
+    // Gets the level info from 'levelDecide' and builds the right level
+    // Creates the level
+    for(var i = 0; i < this.levelToBuild.length; i++){
+        for(var j = 0; j < this.levelToBuild[i].length; j++){
+
+            // Create the floor
+            if (this.levelToBuild[i][j] == 'f'){
+                var floor = this.game.add.sprite(30+20*j, 30+20*i, 'lava');
+                floors.add(floor);
+                floor.body.immovable = true;
+            }
+            // Create the walls
+            else if (this.levelToBuild[i][j] == 'x'){
+                var wall = this.game.add.sprite(30+20*j, 30+20*i, 'wall');
+                platforms.add(wall);
+                wall.body.immovable = true;
+            }
+            // Create jumpPads
+            else if (this.levelToBuild[i][j] == 'e'){
+                var jumpPad = this.game.add.sprite(30+20*j, 30+20*i, 'jumpPad');
+                jumpPads.add(jumpPad);
+                jumpPad.body.immovable = true;
+            }
+        }
+    }
+
+}
+
