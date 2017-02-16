@@ -52,10 +52,9 @@ var playState = {
         // Below this line is level and character specific functions
 
         // Function that creates the player sprites and places them
-        this.player1 = this.playerCreate(160, 320, characterSelect.player1, characterSelect.ID1);
-        this.player2 = this.playerCreate(800, 320, characterSelect.player2, characterSelect.ID2);
+        this.player1 = this.playerCreate(160, 320, characterSelect.player1, characterSelect.ID1, 1);
+        this.player2 = this.playerCreate(800, 320, characterSelect.player2, characterSelect.ID2, 2);
         this.player2.direction = 1;
-        this.player2.ID = 2;
 
         // Function that creates the game level
         this.levelCreate();
@@ -105,7 +104,7 @@ var playState = {
 
     },
 
-    playerCreate: function (posX, posY, sprite, char) {
+    playerCreate: function (posX, posY, sprite, char, number) {
 
         // Add the player sprite to this.player
         var player = game.add.sprite(posX, posY, sprite);
@@ -126,11 +125,34 @@ var playState = {
         // The direction the player is facing
         player.direction = 0;
         // Give the player an identifier
-        player.ID = 1;
+        if (number == 1)
+            player.ID = 1;
+        else
+            player.ID = 2;
         // Give the player a character
         player.char = char;
         // Give the player a timer for collision down
         player.collision = 0;
+
+        // Create the player input for easier input management
+        player.input = {};
+        // Bind the inputs to the player object
+        if (number == 1) {
+            player.input.up = options.controls.player1.up;
+            player.input.down = options.controls.player1.down;
+            player.input.left = options.controls.player1.left;
+            player.input.right = options.controls.player1.right;
+            player.input.attack1 = options.controls.player1.attack1;
+            player.input.attack2 = options.controls.player1.attack2;
+        }
+        else {
+            player.input.up = options.controls.player2.up;
+            player.input.down = options.controls.player2.down;
+            player.input.left = options.controls.player2.left;
+            player.input.right = options.controls.player2.right;
+            player.input.attack1 = options.controls.player2.attack1;
+            player.input.attack2 = options.controls.player2.attack2;
+        }
 
         return player;
 
@@ -142,8 +164,8 @@ var playState = {
     playerUpdate: function () {
 
         // Players movement
-        this.playerMovement(options.controls.player1.left, options.controls.player1.right, this.player1);
-        this.playerMovement(options.controls.player2.left, options.controls.player2.right, this.player2);
+        this.playerMovement(this.player1);
+        this.playerMovement(this.player2);
 
         // Player jumping
         if (options.controls.player1.up.isDown && this.player1.body.touching.down)
@@ -172,12 +194,12 @@ var playState = {
 
     },
 
-    playerMovement: function (left, right, player) {
+    playerMovement: function (player) {
 
-        if (left.isDown && player.body.velocity.x > -150) {
+        if (player.input.left.isDown && player.body.velocity.x > -150) {
             player.body.velocity.x -= 10;
         }
-        else if (right.isDown && player.body.velocity.x <= 150) {
+        else if (player.input.right.isDown && player.body.velocity.x <= 150) {
             player.body.velocity.x += 10;
         }
         else if (player.body.velocity.x <= 10 && player.body.velocity.x >= -10 ) {
@@ -235,10 +257,30 @@ var playState = {
 
     },
 
-    /** Attack Functions
+    /** Character Functions
     * **/
 
+    characterSpread: function (player) {
+
+        if (player.char == 1)
+            this.character1(player);
+        if (player.char == 2)
+            this.character2(player);
+
+    },
+
+    character1: function () {
+
+
+    },
+
+    character2: function () {
+
+    },
+
     attackFunctions: function () {
+
+        this.attackCooldown();
 
         // Attack 1 or "Basic Attack"
         if (options.controls.player1.attack1.isDown) {
@@ -254,23 +296,21 @@ var playState = {
                 this.rangedAttack(this.player2, this.player1);
         }
 
-        /**
-        if (this.attackCooldown.a1 != 0)
-            this.attackCooldown.a1--;
-        if (this.attackCooldown.a2 != 0)
-            this.attackCooldown.a2--;
+    },
 
-        if (this.attackCooldown.a1 == 0)
-            if (options.controls.player1.attack1.isDown) {
-                this.player2.gameHealth -= meleeAttack(this.player1, this.player2);
-                this.attackCooldown.a1 = 40;
-            }
-        if (this.attackCooldown.a2 == 0)
-            if (options.controls.player2.attack1.isDown) {
-                this.player1.gameHealth -= meleeAttack(this.player2, this.player1);
-                this.attackCooldown.a1 = 40;
-            }
-         **/
+    attackCooldown: function (attack, cooldown) {
+
+        var cooldownTimer = setInterval(cooldownInterval(), 500);
+
+        var cooldownReturn = cooldownInterval();
+
+        function cooldownInterval() {
+
+            //console.log('hallå');
+
+
+
+        }
 
     },
 
@@ -322,7 +362,17 @@ var playState = {
 
     restart: function() {
         game.paused = false;
-        game.state.start('playState');
+        game.state.start('mainState');
+    },
+
+    /** Shutdown Function
+     * **/
+
+    shutdown: function () {
+
+        this.player1.kill();
+        this.player2.kill();
+
     },
 
     /** Debugging
