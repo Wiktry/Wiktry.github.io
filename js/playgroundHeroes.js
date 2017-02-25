@@ -59,8 +59,6 @@ var playState = {
         // Function that creates the game level
         this.levelCreate();
 
-
-
     },
 
     update: function() {
@@ -78,7 +76,6 @@ var playState = {
         this.Debug();
 
     },
-
 
     /** Create functions
      * **/
@@ -199,21 +196,28 @@ var playState = {
 
     playerMovement: function (player) {
 
+        // Add velocity to the left if the left button is held
         if (player.input.left.isDown && player.body.velocity.x > -150) {
             player.body.velocity.x -= 10;
+            player.direction = 2;
         }
+        // Add velocity to the right if the right button is held
         else if (player.input.right.isDown && player.body.velocity.x <= 150) {
             player.body.velocity.x += 10;
+            player.direction = 1;
         }
+        // If the velocity is lower then 10 or greater then -10, set it to 0 to avoid getting stuck on weird numbers
         else if (player.body.velocity.x <= 10 && player.body.velocity.x >= -10 ) {
             player.body.velocity.x = 0;
         }
+        // If the player is touching down and not holding a button lower the velocity by 10
         else if (player.body.touching.down === true) {
             if (player.body.velocity.x > 0)
                 player.body.velocity.x -= 10;
             if (player.body.velocity.x < 0)
                 player.body.velocity.x += 10;
         }
+        // If the player is not touching down lower the velocity by 4 instead
         else {
             if (player.body.velocity.x > 0)
                 player.body.velocity.x -= 4;
@@ -249,11 +253,7 @@ var playState = {
 
     platformsCollide: function (player) {
 
-        if (player.ID == 1 && options.controls.player1.down.isDown) {
-            player.body.checkCollision.down = false;
-            player.collision = 20;
-        }
-        if (player.ID == 2 && options.controls.player2.down.isDown) {
+        if (player.input.down.isDown) {
             player.body.checkCollision.down = false;
             player.collision = 20;
         }
@@ -274,20 +274,49 @@ var playState = {
 
     character1: function (player) {
 
-        player.input.attack1.onDown.add(this.meleeAttack, this, 0, player);
+        player.input.attack1.onDown.add(this.meleeAttack, player, 0);
 
     },
 
     character2: function (player) {
 
-
+        player.input.attack1.onDown.add(this.meleeAttack, player, 0);
 
     },
 
     meleeAttack: function () {
 
-        console.log('hej! ' + this.player.ID);
+        // Debug assistance
+        console.log('hej! ' + this.ID);
 
+        // Create variable for positioning of the meleeSprite
+        var posX = null;
+
+        if (this.direction == 1) {
+            posX = this.body.position.x += 32;
+        }
+        else {
+            posX = this.body.position.x -= 20;
+        }
+
+        // Create the meleeSprite
+        var meleeSprite = game.add.sprite(posX, this.body.position.y, 'meleeSprite');
+
+        // Check if there is an overlap between the enemy player and meleeSprite, remove one health if there is
+        if (this.ID == 1) {
+            if (game.physics.arcade.overlap(meleeSprite, playState.player2) === true) {
+                playState.player2.gameHealth--;
+                console.log(playState.player2.gameHealth);
+            }
+        }
+        else if (this.ID == 2) {
+            if (game.physics.arcade.overlap(meleeSprite, playState.player1) === true) {
+                playState.player1.gameHealth--;
+                console.log(playState.player1.gameHealth);
+            }
+        }
+
+        meleeSprite.destroy();
     },
 
     rangedAttack: function (player1, player2) {
@@ -367,31 +396,3 @@ var playState = {
 
     }
 };
-
-// Melee attack **TO BE REMOVED**
-function meleeAttack(player1, player2) {
-
-    this.hit = 0;
-
-    if (player1.direction == 1) {
-        this.posX = player1.body.position.x - 20;
-        this.posY = player1.body.position.y;
-    }
-    else {
-        this.posX = player1.body.position.x + 32;
-        this.posY = player1.body.position.y;
-    }
-
-    this.attackArea = game.add.sprite(this.posX, this.posY, 'meleeSprite');
-
-    if (game.physics.arcade.overlap(player2, this.attackArea) === true)
-        this.hit = 1;
-
-    this.attackArea.destroy();
-
-    if (this.hit == 1)
-        return 1;
-    else
-        return 0;
-
-}

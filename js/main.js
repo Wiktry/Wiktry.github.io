@@ -143,7 +143,7 @@ var mainState = {
         characterSelect.player1 = 'player1';
         characterSelect.player2 = 'player2';
         characterSelect.ID1 = 1;
-        characterSelect.ID2 = 2;
+        characterSelect.ID2 = 1;
 
     },
 
