@@ -59,6 +59,8 @@ var playState = {
         // Function that creates the game level
         this.levelCreate();
 
+
+
     },
 
     update: function() {
@@ -68,9 +70,6 @@ var playState = {
 
         // All the player updates
         this.playerUpdate();
-
-        // All the attack updates
-        this.attackFunctions();
 
         // Game event updates
         this.gameEvents();
@@ -173,6 +172,10 @@ var playState = {
         if (options.controls.player2.up.isDown && this.player2.body.touching.down)
             this.player2.body.velocity.y = global.velocity.playerJumping;
 
+        // Player attacks and animations
+        this.characterSpread(this.player1);
+        this.characterSpread(this.player2);
+
         // Remake!
         // Player leaving the game area
         if (this.player1.body.position.y > 540)
@@ -269,57 +272,21 @@ var playState = {
 
     },
 
-    character1: function () {
+    character1: function (player) {
+
+        player.input.attack1.onDown.add(this.meleeAttack, this, 0, player);
+
+    },
+
+    character2: function (player) {
+
 
 
     },
 
-    character2: function () {
+    meleeAttack: function () {
 
-    },
-
-    attackFunctions: function () {
-
-        this.attackCooldown();
-
-        // Attack 1 or "Basic Attack"
-        if (options.controls.player1.attack1.isDown) {
-            if (this.player1.char == 1)
-                this.meleeAttack(this.player1, this.player2);
-            else
-                this.rangedAttack(this.player1, this.player2);
-        }
-        if (options.controls.player2.attack1.isDown) {
-            if (this.player2.char == 1)
-                this.meleeAttack(this.player2, this.player1);
-            else
-                this.rangedAttack(this.player2, this.player1);
-        }
-
-    },
-
-    attackCooldown: function (attack, cooldown) {
-
-        var cooldownTimer = setInterval(cooldownInterval(), 500);
-
-        var cooldownReturn = cooldownInterval();
-
-        function cooldownInterval() {
-
-            //console.log('hallå');
-
-
-
-        }
-
-    },
-
-    meleeAttack: function (player1, player2) {
-
-        console.log('hej!');
-
-        options.controls.player1.attack1.enabled = false;
-        setTimeout(options.controls.player1.attack1.enabled = true, 1000);
+        console.log('hej! ' + this.player.ID);
 
     },
 
@@ -361,8 +328,8 @@ var playState = {
     },
 
     restart: function() {
-        game.paused = false;
-        game.state.start('mainState');
+        // Reload the whole web page
+        location.reload();
     },
 
     /** Shutdown Function
