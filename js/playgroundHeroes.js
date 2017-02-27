@@ -96,6 +96,7 @@ var playState = {
         this.platforms = game.add.group();
         this.jumpPads = game.add.group();
 
+        // Create the level, all the documentation for this is in the levelCreate.js
         levelCreate(levelDecide, this.floors, this.platforms, this.jumpPads);
 
     },
