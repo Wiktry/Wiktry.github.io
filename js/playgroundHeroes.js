@@ -1,17 +1,24 @@
 var global = {
     velocity: {
-        playerJumping: -350,
-        jumpPad: -500,
+        playerJumping: -400,
+        jumpPad: -600,
     }
 };
 
 var playState = {
+
     preload: function() {
 
         // Text
         this.load.image('gameOver', 'assets/words/image/gameOver.png');
         this.load.image('p1wins', 'assets/words/image/player1wins.png');
         this.load.image('p2wins', 'assets/words/image/player2wins.png');
+
+        //Backgrounds
+        this.load.image('Aether', 'assets/backgrounds/Aether.png');
+
+        // Platform block
+        this.load.image('platform', 'assets/platform.png');
 
         // Assets
         this.load.image('player1', 'assets/player.png');
@@ -51,13 +58,13 @@ var playState = {
 
         // Below this line is level and character specific functions
 
-        // Function that creates the player sprites and places them
-        this.player1 = this.playerCreate(160, 320, characterSelect.player1, characterSelect.ID1, 1);
-        this.player2 = this.playerCreate(800, 320, characterSelect.player2, characterSelect.ID2, 2);
-        this.player2.direction = 1;
-
         // Function that creates the game level
         this.levelCreate();
+
+        // Function that creates the player sprites and places them
+        this.player1 = this.playerCreate(80, 250, characterSelect.player1, characterSelect.ID1, 1);
+        this.player2 = this.playerCreate(848, 250, characterSelect.player2, characterSelect.ID2, 2);
+        this.player2.direction = 1;
 
     },
 
@@ -74,6 +81,10 @@ var playState = {
 
         // Debug function
         this.Debug();
+
+    },
+
+    shutdown: function () {
 
     },
 
@@ -95,6 +106,9 @@ var playState = {
         this.floors = game.add.group();
         this.platforms = game.add.group();
         this.jumpPads = game.add.group();
+
+        // Add the background image
+        this.add.tileSprite(0, 0, 960, 540, 'Aether');
 
         // Create the level, all the documentation for this is in the levelCreate.js
         levelCreate(levelDecide, this.floors, this.platforms, this.jumpPads);
@@ -358,18 +372,9 @@ var playState = {
     },
 
     restart: function() {
+
         // Reload the whole web page
         location.reload();
-    },
-
-    /** Shutdown Function
-     * **/
-
-    shutdown: function () {
-
-        this.player1.kill();
-        this.player2.kill();
-
     },
 
     /** Debugging

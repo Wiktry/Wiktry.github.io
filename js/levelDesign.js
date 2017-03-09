@@ -1,7 +1,10 @@
-// Create the level 
-// Add every space is 20px another 30px is added to the left and right
-// Optimal size is 45 wide and 22 tall, the last five is for the resart block at the bottom
-// x = walls / o = enemies
+/** Old Level Creator
+
+ Create the level
+/* Add every space is 20px another 30px is added to the left and right
+/* Optimal size is 45 wide and 22 tall, the last five is for the restart block at the bottom
+/* x = walls / o = enemies
+
         
 // Level identifier '1'
 var Aether = [
@@ -108,5 +111,49 @@ function levelCreate(levelDecide, floors, platforms, jumpPads) {
         }
     }
 
+};
+
+**/
+
+function levelCreate(levelDecide, floors, platforms, jumpPads) {
+
+    var levelToBuild;
+
+    if (levelDecide == 1)
+        levelToBuild = level1;
+
+    for (var i = 0; i < levelToBuild.length; i++ ) {
+
+        var temp = levelToBuild[i].split('/');
+
+        temp[0] = parseInt(temp[0]);
+        temp[1] = parseInt(temp[1]);
+        temp[2] = parseInt(temp[2]);
+
+        for (var j = 0; j < temp[2]; j++) {
+
+            // Create the floor
+            if (temp[3] == 'f'){
+                var floor = this.game.add.sprite(temp[0]+20*j, temp[1], 'platform');
+                floors.add(floor);
+                floor.body.immovable = true;
+            }
+            // Create the platforms
+            else if (temp[3] == 'p'){
+                var platform = this.game.add.sprite(temp[0]+20*j, temp[1], 'platform');
+                platforms.add(platform);
+                platform.body.immovable = true;
+            }
+            // Create jumpPads
+            else if (temp[3] == 'j'){
+                var jumpPad = this.game.add.sprite(temp[0]+20*j, temp[1], 'platform');
+                jumpPads.add(jumpPad);
+                jumpPad.body.immovable = true;
+            }
+
+        }
+    }
 }
 
+// Level numbers are [X/Y/Number/Type]
+var level1 = ['52/293/4/f', '830/293/4/f', '259/365/2/j', '661/365/2/j', '360/340/12/f', '409/131/7/p'];
