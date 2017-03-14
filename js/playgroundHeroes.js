@@ -302,7 +302,7 @@ var playState = {
     meleeAttack: function () {
 
         // Debug assistance
-        console.log('hej! ' + this.ID);
+        //console.log('hej! ' + this.ID);
 
         // Create variable for positioning of the meleeSprite
         var posX = null;

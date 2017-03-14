@@ -62,14 +62,8 @@ var menuTabs = {
 
 // Create the 'mainState' that loads the game and contains the startup menu
 var mainState = {
-    preload: function() {
-        // This function will be executed at the beginning
-        // That's where we load the images and sounds
 
-        /**
-        this.load.spritesheet('playButton', 'assets/menuButtons/finishedButtons/play.png', 230, 24, 2);
-        this.load.spritesheet('optionsButton', 'assets/menuButtons/finishedButtons/options.png', 230, 24, 2);
-         **/
+    preload: function() {
 
         // Logo
         this.load.image('logo', 'assets/words/image/blockbattles.png');
@@ -82,12 +76,12 @@ var mainState = {
 
         // Level Buttons
         this.load.spritesheet('aether', 'assets/words/spritesheet/aether.png', 78, 18, 3);
+        this.load.spritesheet('atlantis', 'assets/words/spritesheet/atlantis.png', 100, 18, 3);
+        this.load.spritesheet('flatland', 'assets/words/spritesheet/flatland.png', 104, 18, 3);
 
     },
 
     create: function() {
-        // This function is called after the preload function
-        // Here we set up the game, display sprites, etc.
 
         // Scaling
         this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
@@ -106,16 +100,17 @@ var mainState = {
         // Create the main menu
         this.mainMenu();
 
-    },
-
-    update: function() {
-        // This function is called 60 times per second
-        // It contains the game's logic
-
         // Keyboard shortcuts to start the game
         this.keyboardShorts();
 
     },
+
+    update: function() {
+
+    },
+
+    /** Create Functions
+     * **/
 
     inputCreate: function() {
 
@@ -147,15 +142,12 @@ var mainState = {
 
     },
 
-
-    // Create functions for the different menus
-
-
-    // Create function for the main menu
     mainMenu: function () {
 
-        // Main menu background
-        // this.mainMenuBack = this.add.image(this.world.centerX - 240, this.world.centerY - 135, 'mainMenuBack');
+        // Create function for the main menu
+
+        // Draw the menu graphics
+        this.drawMenuGraphics();
 
         // Logo
         this.logo = this.add.image( 60, 60, 'logo');
@@ -164,68 +156,101 @@ var mainState = {
         // Create the buttons
         this.buttonCreate();
 
-        // Draw the menu graphics
-        this.drawMenuGraphics();
     },
 
     keyboardShorts: function() {
         // Keyboard shortcuts to start the game
 
-        if(this.keyboardKey.enter.isDown){
+        this.keyboardKey.enter.onDown.add(function () {
             levelDecide = 1;
             game.state.start('playState');
-        }
-        if(this.keyboardKey.backspace.isDown){
+        }, this);
+
+        this.keyboardKey.backspace.onDown.add(function () {
             levelDecide = 2;
             game.state.start('playState');
-        }
-        if(this.keyboardKey.home.isDown){
+        }, this);
+
+        this.keyboardKey.home.onDown.add(function () {
             levelDecide = 3;
             game.state.start('playState');
-        }
+        }, this);
     },
 
-    // Create all the menu buttons
     buttonCreate: function () {
 
         // Create the menu buttons
-        if (this.playButton == null)
-            this.playButton = this.add.button(60, this.world.centerY - 48, 'playButton', this.playButtonClick, this, 1, 0, 2, 0);
+        this.playButton = this.add.button(60, this.world.centerY - 48, 'playButton', this.playButtonClick, this, 1, 0, 2, 0);
 
-        if (this.optionsButton == null)
-            this.optionsButton = this.add.button(60, this.world.centerY - 0, 'optionsButton', this.optionsButtonClick, this, 1, 0, 2, 0);
+        this.optionsButton = this.add.button(60, this.world.centerY - 0, 'optionsButton', this.optionsButtonClick, this, 1, 0, 2, 0);
 
-        if (this.creditsButton == null)
-            this.creditsButton = this.add.button(60, this.world.centerY + 48, 'creditsButton', this.creditsButtonClick, this, 1, 0, 2, 0);
+        this.creditsButton = this.add.button(60, this.world.centerY + 48, 'creditsButton', this.creditsButtonClick, this, 1, 0, 2, 0);
 
-        if (this.exitButton == null)
-            this.exitButton = this.add.button(60, this.world.centerY + 96, 'exitButton', this.exitButtonClick, this, 1, 0, 2, 0);
+        this.exitButton = this.add.button(60, this.world.centerY + 96, 'exitButton', this.exitButtonClick, this, 1, 0, 2, 0);
 
         // Scale up the buttons
         this.playButton.scale.setTo(2,2);
         this.optionsButton.scale.setTo(2,2);
         this.creditsButton.scale.setTo(2,2);
         this.exitButton.scale.setTo(2,2);
+
+        // Add the groups that the sub-buttons will be placed in
+        this.playButtons = game.add.group();
+        this.optionsButtons = game.add.group();
+        this.creditsButtons = game.add.group();
+
+        /** Add all the sub buttons and add them to their specific groups
+         * **/
+        // Play buttons
+        this.aether = this.add.button(900, this.world.centerY - 48, 'aether', function () {
+            levelDecide = 1;
+            game.state.start('playState');
+        }, this, 1, 0, 2, 0);
+        this.aether.anchor.x = 1;
+        this.aether.scale.setTo(2,2);
+
+        this.atlantis = this.add.button(900, this.world.centerY, 'atlantis', function () {
+            levelDecide = 2;
+            game.state.start('playState');
+        }, this, 1, 0, 2, 0);
+        this.atlantis.anchor.x = 1;
+        this.atlantis.scale.setTo(2,2);
+
+        this.flatland = this.add.button(900, this.world.centerY + 48, 'flatland', function () {
+            levelDecide = 3;
+            game.state.start('playState');
+        }, this, 1, 0, 2, 0);
+        this.flatland.anchor.x = 1;
+        this.flatland.scale.setTo(2,2);
+
+        this.playButtons.add(this.aether);
+        this.playButtons.add(this.atlantis);
+        this.playButtons.add(this.flatland);
+        this.playButtons.visible = false;
+
+        // Options Buttons
+
+        // TEMP
+        this.optionsButtons.visible = false;
+        this.creditsButtons.visible = false;
+
+
     },
 
-    buttonDestroy: function () {
-
-        if (this.playButtonMenu != null)
-            this.playButtonMenu.destroy();
-
-    },
+    /** Menu Events
+     * **/
 
     playButtonClick: function() {
 
-        this.buttonDestroy();
+        if (this.playButtons.visible === false)
+            this.playButtons.visible = true;
+        else if (this.optionsButtons.visible === true)
+            this.optionsButtons.visible = false;
+        else if (this.creditsButtons.visible === true)
+            this.creditsButtons.visible = false;
+        else
+            this.playButtons.visible = false;
 
-        this.playButtonMenu = {
-            aether: this.add.button(900-156, this.world.centerY - 48, 'aether', this.playButtonClick, this, 1, 0, 2, 0),
-            atlantis: this.add.button(),
-            flatlands: this.add.button(),
-        }
-
-        this.playButtonMenu.aether.scale.setTo(2,2);
     },
 
     optionsButtonClick: function () {
@@ -240,6 +265,9 @@ var mainState = {
 
     },
 
+    /** Graphics
+     * **/
+
     drawMenuGraphics: function () {
 
         // Create graphics
@@ -253,6 +281,9 @@ var mainState = {
         this.graphics.lineTo(480, 600);
     },
 
+    /** Debug
+     * **/
+
     debug: function () {
 
         for (var prop in this.keyboardKey) {
@@ -261,7 +292,9 @@ var mainState = {
     }
 };
 
-// Initialize Phaser, and create a 960px by 640px game
+
+/** Initialize Phaser
+ * and create a 960px by 640px game **/
 var game = new Phaser.Game(960, 540, Phaser.AUTO, 'Stage', null, false, false);
 
 // Add the 'mainState' and call it 'main'
