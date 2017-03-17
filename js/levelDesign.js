@@ -155,5 +155,5 @@ function levelCreate(levelDecide, floors, platforms, jumpPads) {
     }
 }
 
-// Level numbers are [X/Y/Number/Type]
+// Platform format is [X/Y/Number/Type]
 var level1 = ['52/293/4/f', '830/293/4/f', '259/365/2/j', '661/365/2/j', '360/340/12/f', '409/131/7/p'];

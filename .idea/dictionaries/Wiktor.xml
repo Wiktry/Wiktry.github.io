@@ -2,6 +2,8 @@
   <dictionary name="Wiktor">
     <words>
       <w>cooldown</w>
+      <w>cooldowns</w>
+      <w>healthbar</w>
     </words>
   </dictionary>
 </component>

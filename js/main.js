@@ -44,6 +44,7 @@ var options = {
 };
 
 // The players chosen character
+// player1/2 is the sprite and ID1/2 is the selected character
 var characterSelect = {
     player1: null,
     ID1: null,
@@ -51,33 +52,24 @@ var characterSelect = {
     ID2: null
 };
 
-// All the different main menu tabs and items, they need to be s I can create and delete them in different functions
-var menuTabs = {
-    play: null,
-    options: null,
-    credits: null,
-};
 
-
-
-// Create the 'mainState' that loads the game and contains the startup menu
 var mainState = {
 
     preload: function() {
 
         // Logo
-        this.load.image('logo', 'assets/words/image/blockbattles.png');
+        this.load.image('logo', 'assets/ui/blockbattles.png');
 
         // Main menu buttons
-        this.load.spritesheet('playButton', 'assets/words/spritesheet/play.png', 54, 18, 3);
-        this.load.spritesheet('optionsButton', 'assets/words/spritesheet/options.png', 86, 18, 3);
-        this.load.spritesheet('creditsButton', 'assets/words/spritesheet/credits.png', 84, 18, 3);
-        this.load.spritesheet('exitButton', 'assets/words/spritesheet/exit.png', 48, 18, 3);
+        this.load.spritesheet('playButton', 'assets/ui/play.png', 54, 18, 3);
+        this.load.spritesheet('optionsButton', 'assets/ui/options.png', 86, 18, 3);
+        this.load.spritesheet('creditsButton', 'assets/ui/credits.png', 84, 18, 3);
+        this.load.spritesheet('exitButton', 'assets/ui/exit.png', 48, 18, 3);
 
         // Level Buttons
-        this.load.spritesheet('aether', 'assets/words/spritesheet/aether.png', 78, 18, 3);
-        this.load.spritesheet('atlantis', 'assets/words/spritesheet/atlantis.png', 100, 18, 3);
-        this.load.spritesheet('flatland', 'assets/words/spritesheet/flatland.png', 104, 18, 3);
+        this.load.spritesheet('aether', 'assets/ui/aether.png', 78, 18, 3);
+        this.load.spritesheet('atlantis', 'assets/ui/atlantis.png', 100, 18, 3);
+        this.load.spritesheet('flatland', 'assets/ui/flatland.png', 104, 18, 3);
 
     },
 
@@ -114,6 +106,9 @@ var mainState = {
 
     inputCreate: function() {
 
+        this.pad1 = this.input.gamepad.pad1;
+        this.pad2 = this.input.gamepad.pad2;
+
         // Add the keyboard Keys
         this.keyboardKey = keyBinding(null, true);
 
@@ -127,18 +122,20 @@ var mainState = {
         options.controls.player1.down = this.keyboardKey.S;
         options.controls.player1.attack1 = this.keyboardKey.Q;
         options.controls.player1.attack2 = this.keyboardKey.E;
+        options.controls.player1.block = this.keyboardKey.R;
         options.controls.player2.left = this.keyboardKey.J;
         options.controls.player2.right = this.keyboardKey.L;
         options.controls.player2.up = this.keyboardKey.I;
         options.controls.player2.down = this.keyboardKey.K;
         options.controls.player2.attack1 = this.keyboardKey.U;
         options.controls.player2.attack2 = this.keyboardKey.O;
+        options.controls.player2.block = this.keyboardKey.P;
 
         // Add the sprites and ID to the characterSelect var **TEMPORARY**
         characterSelect.player1 = 'player1';
         characterSelect.player2 = 'player2';
         characterSelect.ID1 = 1;
-        characterSelect.ID2 = 1;
+        characterSelect.ID2 = 2;
 
     },
 
