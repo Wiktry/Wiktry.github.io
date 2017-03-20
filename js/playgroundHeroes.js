@@ -10,6 +10,7 @@ var animations = {};
 // Add a variable for the weapon
 var weapon;
 var weapon2;
+var shield;
 
 var playState = {
 
@@ -30,6 +31,7 @@ var playState = {
         this.load.spritesheet('projectile1', 'assets/projectile1.png', 16, 16);
         this.load.spritesheet('projectile2', 'assets/projectile2.png', 27, 16);
         this.load.spritesheet('explosion', 'assets/explosion.png', 350, 350, 30);
+        this.load.image('shield', 'assets/shield.png');
 
         // Ui
         this.load.spritesheet('healthbar', 'assets/ui/healthbar.png', 157, 32);
@@ -453,16 +455,12 @@ var playState = {
         this.physics.arcade.collide(this.player2, this.jumpPads, this.jumpPadCollide);
 
         // Collision between the bullets from weapon1 and the players
-        if (this.player1.block == 0) {
-            this.physics.arcade.collide(this.player2, weapon.bullets, this.rangedHit1, null, this.player1);
-            this.physics.arcade.collide(this.player1, weapon.bullets, this.rangedHit1, null, this.player2);
-        }
+        this.physics.arcade.overlap(this.player1, weapon.bullets, this.rangedHit1, null, this.player2);
+        this.physics.arcade.overlap(this.player1, weapon2.bullets, this.rangedHit2, null, this.player2);
 
         // Collision between the bullets from weapon1 and the players
-        if (this.player2.block == 0) {
-            this.physics.arcade.collide(this.player1, weapon2.bullets, this.rangedHit2, null, this.player2);
-            this.physics.arcade.collide(this.player2, weapon2.bullets, this.rangedHit2, null, this.player1);
-        }
+        this.physics.arcade.overlap(this.player2, weapon.bullets, this.rangedHit1, null, this.player1);
+        this.physics.arcade.overlap(this.player2, weapon2.bullets, this.rangedHit2, null, this.player1);
 
     },
 
@@ -513,7 +511,7 @@ var playState = {
 
         player.input.attack2.onDown.add(this.char2attack2, player, 0);
 
-        player.input.attack1.onDown.add(this.block, player, 0);
+        player.input.block.onDown.add(this.block, player, 0);
 
     },
 
@@ -535,6 +533,10 @@ var playState = {
         if (player.input.block.isDown && player.blockCool == 0) {
             player.blockCool = 300;
             this.uiCooldown( player.ID, 3, 300);
+        }
+        // Stop the block after 90 frames or 1.5 seconds
+        if (player.blockCool < 210) {
+            player.block = 0;
         }
 
         // Actually count down the cooldowns
@@ -572,13 +574,13 @@ var playState = {
 
         // Check if there is an overlap between the enemy player and meleeSprite, remove one health if there is
         if (this.ID == 1) {
-            if (game.physics.arcade.overlap(meleeSprite, playState.player2) === true) {
+            if (game.physics.arcade.overlap(meleeSprite, playState.player2) === true && playState.player2.block == 0) {
                 playState.player2.gameHealth--;
                 console.log(playState.player2.gameHealth);
             }
         }
         else if (this.ID == 2) {
-            if (game.physics.arcade.overlap(meleeSprite, playState.player1) === true) {
+            if (game.physics.arcade.overlap(meleeSprite, playState.player1) === true && playState.player1.block == 0) {
                 playState.player1.gameHealth--;
                 console.log(playState.player1.gameHealth);
             }
@@ -617,14 +619,14 @@ var playState = {
             var meleeSpriteLeft = game.add.sprite(posXl, posY, 'meleeSprite');
 
             // Check if there is an overlap between the enemy player and meleeSprite, remove one health if there is
-            if (this.ID == 1) {
-                if (game.physics.arcade.overlap(meleeSpriteRight, playState.player2) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player2) === true) {
+            if (this.ID == 1 && playState.player2.block == 0) {
+                if ((game.physics.arcade.overlap(meleeSpriteRight, playState.player2) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player2) === true)) {
                     playState.player2.gameHealth--;
                     console.log(playState.player2.gameHealth);
                 }
             }
-            else if (this.ID == 2) {
-                if (game.physics.arcade.overlap(meleeSpriteRight, playState.player1) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player1) === true) {
+            else if (this.ID == 2 && playState.player1.block == 0) {
+                if ((game.physics.arcade.overlap(meleeSpriteRight, playState.player1) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player1) === true)) {
                     playState.player1.gameHealth--;
                     console.log(playState.player1.gameHealth);
                 }
@@ -640,13 +642,13 @@ var playState = {
                 meleeSpriteLeft = game.add.sprite(posXl - 20, posY, 'meleeSprite');
 
                 // Check if there is an overlap between the enemy player and meleeSprite, remove one health if there is
-                if (this.ID == 1) {
+                if (this.ID == 1 && playState.player2.block == 0) {
                     if (game.physics.arcade.overlap(meleeSpriteRight, playState.player2) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player2) === true) {
                         playState.player2.gameHealth--;
                         console.log(playState.player2.gameHealth);
                     }
                 }
-                else if (this.ID == 2) {
+                else if (this.ID == 2 && playState.player1.block == 0) {
                     if (game.physics.arcade.overlap(meleeSpriteRight, playState.player1) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player1) === true) {
                         playState.player1.gameHealth--;
                         console.log(playState.player1.gameHealth);
@@ -661,13 +663,13 @@ var playState = {
                     meleeSpriteLeft = game.add.sprite(posXl - 2*20, posY, 'meleeSprite');
 
                     // Check if there is an overlap between the enemy player and meleeSprite, remove one health if there is
-                    if (this.ID == 1) {
+                    if (this.ID == 1 && playState.player2.block == 0) {
                         if (game.physics.arcade.overlap(meleeSpriteRight, playState.player2) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player2) === true) {
                             playState.player2.gameHealth--;
                             console.log(playState.player2.gameHealth);
                         }
                     }
-                    else if (this.ID == 2) {
+                    else if (this.ID == 2 && playState.player1.block == 0) {
                         if (game.physics.arcade.overlap(meleeSpriteRight, playState.player1) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player1) === true) {
                             playState.player1.gameHealth--;
                             console.log(playState.player1.gameHealth);
@@ -682,13 +684,13 @@ var playState = {
                         meleeSpriteLeft = game.add.sprite(posXl - 3*20, posY, 'meleeSprite');
 
                         // Check if there is an overlap between the enemy player and meleeSprite, remove one health if there is
-                        if (this.ID == 1) {
+                        if (this.ID == 1 && playState.player2.block == 0) {
                             if (game.physics.arcade.overlap(meleeSpriteRight, playState.player2) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player2) === true) {
                                 playState.player2.gameHealth--;
                                 console.log(playState.player2.gameHealth);
                             }
                         }
-                        else if (this.ID == 2) {
+                        else if (this.ID == 2 && playState.player1.block == 0) {
                             if (game.physics.arcade.overlap(meleeSpriteRight, playState.player1) === true || game.physics.arcade.overlap(meleeSpriteLeft, playState.player1) === true) {
                                 playState.player1.gameHealth--;
                                 console.log(playState.player1.gameHealth);
@@ -791,20 +793,20 @@ var playState = {
 
     rangedHit1: function (player, weapon) {
 
-        if (player.ID == 1 && this.ID == 2) {
+        if (player.ID == 1 && this.ID == 2 && playState.player1.block == 0) {
             playState.player1.gameHealth--;
-            weapon.kill();
         }
-        else if (player.ID == 2 && this.ID == 1) {
+        else if (player.ID == 2 && this.ID == 1 && playState.player2.block == 0) {
             playState.player2.gameHealth--;
-            weapon.kill();
         }
+
+        weapon.kill();
 
     },
 
     rangedHit2: function (player, weapon) {
 
-        if (player.ID == 1 && this.ID == 2) {
+        if (player.ID == 1 && this.ID == 2 && playState.player1.block == 0) {
             playState.player1.gameHealth--;
             playState.player1.gameHealth--;
 
@@ -814,10 +816,8 @@ var playState = {
             this.explosion.y = weapon.y;
             this.explosion.animations.add('boom', null, false);
             this.explosion.play('boom');
-
-            weapon.kill();
         }
-        else if (player.ID == 2 && this.ID == 1) {
+        else if (player.ID == 2 && this.ID == 1  && playState.player2.block == 0) {
             playState.player2.gameHealth--;
             playState.player2.gameHealth--;
 
@@ -827,16 +827,51 @@ var playState = {
             this.explosion.y = weapon.y;
             this.explosion.animations.add('boom', null, false);
             this.explosion.play('boom');
-
-            weapon.kill();
         }
+
+        weapon.kill();
 
     },
 
     block: function () {
 
-        this.block = 1;
+        if (this.blockCool > 3)
+            return null;
 
+        if (this.blockCool < 3)
+            this.block = 1;
+
+        shield = game.add.sprite(0, 0, 'shield');
+        shield.on = 1;
+        shield.anchor.setTo(.5,.5);
+        shield.x = this.body.position.x + 16;
+        shield.y = this.body.position.y + 16;
+
+        game.time.events.add(Phaser.Timer.SECOND * .3, function () {
+            shield.x = this.body.position.x + 16;
+            shield.y = this.body.position.y + 16;
+            game.time.events.add(Phaser.Timer.SECOND * .3, function () {
+                shield.x = this.body.position.x + 16;
+                shield.y = this.body.position.y + 16;
+                game.time.events.add(Phaser.Timer.SECOND * .3, function () {
+                    shield.x = this.body.position.x + 16;
+                    shield.y = this.body.position.y + 16;
+                    game.time.events.add(Phaser.Timer.SECOND * .3, function () {
+                        shield.x = this.body.position.x + 16;
+                        shield.y = this.body.position.y + 16;
+                        game.time.events.add(Phaser.Timer.SECOND * .3, function () {
+                            shield.x = this.body.position.x + 16;
+                            shield.y = this.body.position.y + 16;
+                        }, this);
+                    }, this);
+                }, this);
+            }, this);
+        }, this);
+
+        game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
+            shield.on = 0;
+            shield.kill();
+        });
     },
 
     /** Animations
