@@ -7,6 +7,10 @@ var global = {
 
 var animations = {};
 
+// Add a variable for the weapon
+var weapon;
+var weapon2;
+
 var playState = {
 
     preload: function() {
@@ -23,6 +27,9 @@ var playState = {
 
         // Attacks
         this.load.image('meleeSprite', 'assets/meleeSprite.png');
+        this.load.spritesheet('projectile1', 'assets/projectile1.png', 16, 16);
+        this.load.spritesheet('projectile2', 'assets/projectile2.png', 27, 16);
+        this.load.spritesheet('explosion', 'assets/explosion.png', 350, 350, 30);
 
         // Ui
         this.load.spritesheet('healthbar', 'assets/ui/healthbar.png', 157, 32);
@@ -84,6 +91,9 @@ var playState = {
 
         // Create audio
         this.audioCreate();
+
+        weapon = game.add.weapon(1, 'projectile1');
+        weapon2 = game.add.weapon(1, 'projectile2');
 
     },
 
@@ -166,6 +176,8 @@ var playState = {
         player.char = char;
         // Give the player a timer for collision down
         player.collision = 0;
+        // If the player is blocking set this to 1
+        player.block = 0;
         // Give the player timers for their two attacks
         player.attack1Cool = 0;
         player.attack2Cool = 0;
@@ -439,6 +451,19 @@ var playState = {
         // If the player touches the jumpPad
         this.physics.arcade.collide(this.player1, this.jumpPads, this.jumpPadCollide);
         this.physics.arcade.collide(this.player2, this.jumpPads, this.jumpPadCollide);
+
+        // Collision between the bullets from weapon1 and the players
+        if (this.player1.block == 0) {
+            this.physics.arcade.collide(this.player2, weapon.bullets, this.rangedHit1, null, this.player1);
+            this.physics.arcade.collide(this.player1, weapon.bullets, this.rangedHit1, null, this.player2);
+        }
+
+        // Collision between the bullets from weapon1 and the players
+        if (this.player2.block == 0) {
+            this.physics.arcade.collide(this.player1, weapon2.bullets, this.rangedHit2, null, this.player2);
+            this.physics.arcade.collide(this.player2, weapon2.bullets, this.rangedHit2, null, this.player1);
+        }
+
     },
 
     jumpPadCollide: function (player) {
@@ -474,18 +499,21 @@ var playState = {
 
     character1: function (player) {
 
-
         player.input.attack1.onDown.add( this.char1attack1, player, 0);
 
         player.input.attack2.onDown.add( this.char1attack2, player, 0);
 
-        //player.input.block.onDown.add( this.char1block, player, 0);
+        player.input.block.onDown.add( this.block, player, 0);
 
     },
 
     character2: function (player) {
 
-        //player.input.attack1.onDown.add(this.meleeAttack, player, 0);
+        player.input.attack1.onDown.add(this.char2attack1, player, 0);
+
+        player.input.attack2.onDown.add(this.char2attack2, player, 0);
+
+        player.input.attack1.onDown.add(this.block, player, 0);
 
     },
 
@@ -678,15 +706,136 @@ var playState = {
         }, this);
     },
 
-    char1block: function () {
+    char2attack1: function () {
 
+        if (weapon.shoot == 1)
+            weapon.bullets.destroy();
 
+        // Stop the attack if it is on cool down
+        if (this.attack1Cool > 3)
+            return null;
+
+        // Create the weapon, add it to the variable, create 3 bullets the player can use and give it the sprite 'projectile1'
+        weapon = game.add.weapon(1, 'projectile1');
+
+        // Give the weapon the ID of 1
+        weapon.ID = 1;
+
+        // Add the animation for the bullet sprite
+        weapon.addBulletAnimation('anim', null, 15, true);
+        weapon.bulletAnimation = 'anim';
+
+        // Kill the bullets on world bound
+        weapon.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+
+        // Check which direction the player is facing
+        if (this.direction == 1) {
+            weapon.bulletSpeed = 250;
+            weapon.trackSprite(this, 42, 16, true);
+        }
+        else if (this.direction == 2) {
+            weapon.bulletSpeed = -250;
+            weapon.trackSprite(this, -10, 16, true);
+            weapon.bulletAngleOffset = 180;
+        }
+
+        // Set weapon.shoot to 0 when the bullet is destroyed
+        weapon.onkill = weapon.shoot = 0;
+
+        // Set weapon.shoot to 1 when a new bullet is fired
+        weapon.shoot = 1;
+
+        // Fire the weapon
+        weapon.fire();
 
     },
 
-    char2attack1: function (player1, player2) {
+    char2attack2: function () {
 
+        // Stop the attack if it is on cool down
+        if (this.attack2Cool > 3)
+            return null;
 
+        // Create the weapon, add it to the variable, create 1 bullet the player can use and give it the sprite 'projectile2'
+        weapon2 = game.add.weapon(1, 'projectile2');
+
+        // Give the weapon the ID of 2
+        weapon2.ID = 2;
+
+        // Add the animation for the bullet sprite
+        weapon2.addBulletAnimation('anim', null, 15, true);
+        weapon2.bulletAnimation = 'anim';
+
+        // Kill the bullets on world bound
+        weapon2.bulletKillType = Phaser.Weapon.KILL_WORLD_BOUNDS;
+
+        // Add gravity to the bullets and set it to 200
+        game.physics.arcade.enable(weapon2.bullets);
+        weapon2.bulletGravity = 2000;
+
+        // Check which direction the player is facing
+        if (this.direction == 1) {
+            weapon2.bulletSpeed = 250;
+            weapon2.trackSprite(this, 47, 16, true);
+        }
+        else if (this.direction == 2) {
+            weapon2.bulletSpeed = -250;
+            weapon2.trackSprite(this, -15, 16, true);
+            weapon2.bulletAngleOffset = 180;
+        }
+
+        // Fire the weapon
+        weapon2.fire();
+
+    },
+
+    rangedHit1: function (player, weapon) {
+
+        if (player.ID == 1 && this.ID == 2) {
+            playState.player1.gameHealth--;
+            weapon.kill();
+        }
+        else if (player.ID == 2 && this.ID == 1) {
+            playState.player2.gameHealth--;
+            weapon.kill();
+        }
+
+    },
+
+    rangedHit2: function (player, weapon) {
+
+        if (player.ID == 1 && this.ID == 2) {
+            playState.player1.gameHealth--;
+            playState.player1.gameHealth--;
+
+            this.explosion = game.add.sprite(0, 0, 'explosion');
+            this.explosion.anchor.setTo(.5,.5);
+            this.explosion.x = weapon.x;
+            this.explosion.y = weapon.y;
+            this.explosion.animations.add('boom', null, false);
+            this.explosion.play('boom');
+
+            weapon.kill();
+        }
+        else if (player.ID == 2 && this.ID == 1) {
+            playState.player2.gameHealth--;
+            playState.player2.gameHealth--;
+
+            this.explosion = game.add.sprite(0, 0, 'explosion');
+            this.explosion.anchor.setTo(.5,.5);
+            this.explosion.x = weapon.x;
+            this.explosion.y = weapon.y;
+            this.explosion.animations.add('boom', null, false);
+            this.explosion.play('boom');
+
+            weapon.kill();
+        }
+
+    },
+
+    block: function () {
+
+        this.block = 1;
 
     },
 
@@ -755,7 +904,7 @@ var playState = {
 
         // Display the player health
         game.debug.text("health1 = " + this.player1.gameHealth, 2, 70, "#00ff00");
-        game.debug.text("health2 = " + this.player2.gameHealth, 2, 84, "#00ff00");
+        game.debug.text("health2 = " + this.player2.direction, 2, 84, "#00ff00");
 
         game.debug.text("playerPosX = " + this.player1.body.position.x, 2, 98, "#00ff00");
 
