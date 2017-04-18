@@ -18,6 +18,8 @@ var playState = {
 
         //Backgrounds
         this.load.image('Aether', 'assets/backgrounds/Aether.png');
+        this.load.image('Desert', 'assets/backgrounds/Desert.png');
+        this.load.image('Flatlands', 'assets/backgrounds/Flatlands.png');
 
         // Platform block
         this.load.image('platform', 'assets/platform.png');
@@ -117,7 +119,7 @@ var playState = {
         this.audioVolume();
 
         // Debug function
-        this.Debug();
+        //this.Debug();
 
     },
 
@@ -145,7 +147,12 @@ var playState = {
         this.jumpPads = game.add.group();
 
         // Add the background image
-        this.add.tileSprite(0, 0, 960, 540, 'Aether');
+        if (levelDecide == 1)
+            this.add.tileSprite(0, 0, 960, 540, 'Aether');
+        else if (levelDecide == 2)
+            this.add.tileSprite(0, 0, 960, 540, 'Desert');
+        else if (levelDecide == 3)
+            this.add.tileSprite(0, 0, 960, 540, 'Flatlands');
 
         // Create the level, all the documentation for this is in the levelCreate.js
         levelCreate(levelDecide, this.floors, this.platforms, this.jumpPads);
@@ -351,7 +358,7 @@ var playState = {
         if (this.player1.char == 1)
             this.p1charico = game.add.sprite(25, 488, 'char1ico');
         else
-            this.p1charico = game.add.sprite(25, 10, 'char2ico');
+            this.p1charico = game.add.sprite(25, 488, 'char2ico');
 
         console.log(this.player2.char);
 
@@ -501,7 +508,7 @@ var playState = {
 
         player.input.attack2.onDown.add( this.char1attack2, player, 0);
 
-        player.input.block.onDown.add( this.block, player, 0);
+        player.input.block.onDown.add( this.block, player, 0, player);
 
     },
 
@@ -511,7 +518,7 @@ var playState = {
 
         player.input.attack2.onDown.add(this.char2attack2, player, 0);
 
-        player.input.block.onDown.add(this.block, player, 0);
+        player.input.block.onDown.add(this.block, player, 0, player);
 
     },
 
@@ -833,7 +840,7 @@ var playState = {
 
     },
 
-    block: function () {
+    block: function (player) {
 
         if (this.blockCool > 3)
             return null;
@@ -847,30 +854,21 @@ var playState = {
         shield.x = this.body.position.x + 16;
         shield.y = this.body.position.y + 16;
 
-        game.time.events.add(Phaser.Timer.SECOND * .3, function () {
-            shield.x = this.body.position.x + 16;
-            shield.y = this.body.position.y + 16;
-            game.time.events.add(Phaser.Timer.SECOND * .3, function () {
-                shield.x = this.body.position.x + 16;
-                shield.y = this.body.position.y + 16;
-                game.time.events.add(Phaser.Timer.SECOND * .3, function () {
-                    shield.x = this.body.position.x + 16;
-                    shield.y = this.body.position.y + 16;
-                    game.time.events.add(Phaser.Timer.SECOND * .3, function () {
-                        shield.x = this.body.position.x + 16;
-                        shield.y = this.body.position.y + 16;
-                        game.time.events.add(Phaser.Timer.SECOND * .3, function () {
-                            shield.x = this.body.position.x + 16;
-                            shield.y = this.body.position.y + 16;
-                        }, this);
-                    }, this);
-                }, this);
-            }, this);
-        }, this);
+        var loop = game.time.events.loop(1000/60, shieldUpdate, this, shield.x, shield.y, this.body.position);
+
+        function shieldUpdate(x, y, p) {
+            shield.kill();
+            shield = game.add.sprite(0, 0, 'shield');
+            shield.anchor.setTo(.5,.5);
+            shield.x = p.x + 16;
+            shield.y = p.y + 16;
+        }
 
         game.time.events.add(Phaser.Timer.SECOND * 1.5, function () {
+            game.time.events.remove(loop);
             shield.on = 0;
             shield.kill();
+            console.log('ded');
         });
     },
 

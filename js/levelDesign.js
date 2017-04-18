@@ -121,6 +121,10 @@ function levelCreate(levelDecide, floors, platforms, jumpPads) {
 
     if (levelDecide == 1)
         levelToBuild = level1;
+    else if (levelDecide == 2)
+        levelToBuild = level2;
+    else if (levelDecide == 3)
+        levelToBuild = level3;
 
     for (var i = 0; i < levelToBuild.length; i++ ) {
 
@@ -157,3 +161,5 @@ function levelCreate(levelDecide, floors, platforms, jumpPads) {
 
 // Platform format is [X/Y/Number/Type]
 var level1 = ['52/293/4/f', '830/293/4/f', '259/365/2/j', '661/365/2/j', '360/340/12/f', '409/131/7/p'];
+var level2 = ['535/405/7/f', '735/405/7/f', '5/405/21/f', '525/156/21/p', '385/300/7/p', '45/300/7/p', '214/189/7/p', '364/75/7/p'];
+var level3 = ['0/378/48/f']
