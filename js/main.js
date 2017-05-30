@@ -60,16 +60,19 @@ var mainState = {
         // Logo
         this.load.image('logo', 'assets/ui/blockbattles.png');
 
-        // Main menu buttons
-        this.load.spritesheet('playButton', 'assets/ui/play.png', 54, 18, 3);
-        this.load.spritesheet('optionsButton', 'assets/ui/options.png', 86, 18, 3);
-        this.load.spritesheet('creditsButton', 'assets/ui/credits.png', 84, 18, 3);
-        this.load.spritesheet('exitButton', 'assets/ui/exit.png', 48, 18, 3);
-
         // Level Buttons
         this.load.spritesheet('aether', 'assets/ui/aether.png', 78, 18, 3);
         this.load.spritesheet('atlantis', 'assets/ui/atlantis.png', 100, 18, 3);
         this.load.spritesheet('flatland', 'assets/ui/flatland.png', 104, 18, 3);
+
+        //Backgrounds
+        this.load.image('Aether', 'assets/backgrounds/Aether.png');
+        this.load.image('Desert', 'assets/backgrounds/Desert.png');
+        this.load.image('Flatlands', 'assets/backgrounds/Flatlands.png');
+
+        // Scripts
+        this.load.script('BlurX', 'js/Script/BlurX.js');
+        this.load.script('BlurY', 'js/Script/BlurY.js');
 
     },
 
@@ -86,6 +89,8 @@ var mainState = {
         // Stage background color
         this.stage.backgroundColor = '#56abec';
 
+        this.backgroundImageCreate();
+
         // Create the inputs
         this.inputCreate();
 
@@ -98,6 +103,10 @@ var mainState = {
     },
 
     update: function() {
+
+        // Animate the logo
+        this.logoAnimate();
+        this.logo.scale.setTo(this.logoAnimateScale, this.logoAnimateScale);
 
     },
 
@@ -143,15 +152,38 @@ var mainState = {
 
         // Create function for the main menu
 
-        // Draw the menu graphics
-        this.drawMenuGraphics();
-
         // Logo
-        this.logo = this.add.image( 60, 60, 'logo');
-        this.logo.scale.setTo(2.5, 2.5);
+        this.logo = this.add.image( this.world.centerX, 60, 'logo');
+        this.logo.anchor.x = .5;
+        this.logo.anchor.y = .5;
+        this.logo.scale.setTo(5, 5);
+
+        this.logoAnimateScale = 5;
+        this.logoAnimateScaleChange = true;
 
         // Create the buttons
         this.buttonCreate();
+
+    },
+
+    backgroundImageCreate: function () {
+
+        var X = Math.random()*10;
+
+        if (X < 4)
+            this.backgroundImage = this.add.tileSprite(0, 0, 960, 540, 'Aether');
+        else if (X < 7)
+            this.backgroundImage = this.add.tileSprite(0, 0, 960, 540, 'Flatlands');
+        else
+            this.backgroundImage = this.add.tileSprite(0, 0, 960, 540, 'Desert');
+
+        var blurX = game.add.filter('BlurX');
+        var blurY = game.add.filter('BlurY');
+
+        blurX.blur = 8;
+        blurY.blur = 8;
+
+        this.backgroundImage.filters = [blurX, blurY];
 
     },
 
@@ -176,26 +208,6 @@ var mainState = {
 
     buttonCreate: function () {
 
-        // Create the menu buttons
-        this.playButton = this.add.button(60, this.world.centerY - 48, 'playButton', this.playButtonClick, this, 1, 0, 2, 0);
-
-        this.optionsButton = this.add.button(60, this.world.centerY - 0, 'optionsButton', this.optionsButtonClick, this, 1, 0, 2, 0);
-
-        this.creditsButton = this.add.button(60, this.world.centerY + 48, 'creditsButton', this.creditsButtonClick, this, 1, 0, 2, 0);
-
-        this.exitButton = this.add.button(60, this.world.centerY + 96, 'exitButton', this.exitButtonClick, this, 1, 0, 2, 0);
-
-        // Scale up the buttons
-        this.playButton.scale.setTo(2,2);
-        this.optionsButton.scale.setTo(2,2);
-        this.creditsButton.scale.setTo(2,2);
-        this.exitButton.scale.setTo(2,2);
-
-        // Add the groups that the sub-buttons will be placed in
-        this.playButtons = game.add.group();
-        this.optionsButtons = game.add.group();
-        this.creditsButtons = game.add.group();
-
         /** Add all the sub buttons and add them to their specific groups
          * **/
         // Play buttons
@@ -219,46 +231,24 @@ var mainState = {
         }, this, 1, 0, 2, 0);
         this.flatland.anchor.x = 1;
         this.flatland.scale.setTo(2,2);
-
-        this.playButtons.add(this.aether);
-        this.playButtons.add(this.atlantis);
-        this.playButtons.add(this.flatland);
-        this.playButtons.visible = false;
-
-        // Options Buttons
-
-        // TEMP
-        this.optionsButtons.visible = false;
-        this.creditsButtons.visible = false;
-
-
     },
 
-    /** Menu Events
+    /** Animations
      * **/
 
-    playButtonClick: function() {
+    logoAnimate: function () {
 
-        if (this.playButtons.visible === false)
-            this.playButtons.visible = true;
-        else if (this.optionsButtons.visible === true)
-            this.optionsButtons.visible = false;
-        else if (this.creditsButtons.visible === true)
-            this.creditsButtons.visible = false;
+        // Change the size of the logo
+        if (this.logoAnimateScaleChange === true)
+            this.logoAnimateScale += 0.005;
         else
-            this.playButtons.visible = false;
+            this.logoAnimateScale -= 0.005;
 
-    },
-
-    optionsButtonClick: function () {
-
-    },
-
-    creditsButtonClick: function () {
-
-    },
-
-    exitButtonClick: function () {
+        // Decide whether to increase or decrease the logo's size
+        if (this.logoAnimateScale >= 5.2)
+            this.logoAnimateScaleChange = false;
+        else if (this.logoAnimateScale <= 4.8)
+            this.logoAnimateScaleChange = true;
 
     },
 

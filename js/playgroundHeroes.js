@@ -128,9 +128,6 @@ var playState = {
         // Debug function
         //this.Debug();
 
-        console.log(pad1._axes[0]);
-        //console.log(pad1._rawPad.axes[0]);
-
     },
 
     shutdown: function () {
@@ -273,9 +270,9 @@ var playState = {
         this.playerMovement(this.player2);
 
         // Player jumping
-        if (options.controls.player1.up.isDown || this.player1.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) < -0.1 && this.player1.body.touching.down)
+        if (options.controls.player1.up.isDown && this.player1.body.touching.down)
             this.player1.body.velocity.y = global.velocity.playerJumping;
-        if (options.controls.player2.up.isDown || this.player2.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_Y) < -0.1 && this.player2.body.touching.down)
+        if (options.controls.player2.up.isDown && this.player2.body.touching.down)
             this.player2.body.velocity.y = global.velocity.playerJumping;
 
         // Player attacks and animations
@@ -306,13 +303,13 @@ var playState = {
     playerMovement: function (player) {
 
         // Add velocity to the left if the left button is held
-        if (player.input.left.isDown || player.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) < -0.1 && player.body.velocity.x > -150) {
+        if (player.input.left.isDown && player.body.velocity.x > -150) {
             player.body.velocity.x -= 10;
             player.direction = 2;
             player.animations.play('left', 1);
         }
         // Add velocity to the right if the right button is held
-        else if (player.input.right.isDown || player.pad.axis(Phaser.Gamepad.XBOX360_STICK_LEFT_X) > 0.1 && player.body.velocity.x <= 150) {
+        else if (player.input.right.isDown && player.body.velocity.x <= 150) {
             player.body.velocity.x += 10;
             player.direction = 1;
             player.animations.play('right', 1);
@@ -745,7 +742,7 @@ var playState = {
             return null;
 
         // Create the weapon, add it to the variable, create 3 bullets the player can use and give it the sprite 'projectile1'
-        weapon = game.add.weapon(1, 'projectile1');
+        weapon = game.add.weapon(3, 'projectile1');
 
         // Give the weapon the ID of 1
         weapon.ID = 1;
