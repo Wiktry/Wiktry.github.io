@@ -2,14 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1f19246d-1ee1-4807-861a-03133ee178a8" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Stolen Art/Magic-Cliffs-Environment/Magic-Cliffs-Environment/PNG/Thumbs.db" afterPath="$PROJECT_DIR$/Stolen Art/Magic-Cliffs-Environment/Magic-Cliffs-Environment/PNG/Thumbs.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Stolen Art/platformerGraphicsDeluxe_Updated/Items/Thumbs.db" afterPath="$PROJECT_DIR$/Stolen Art/platformerGraphicsDeluxe_Updated/Items/Thumbs.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/Thumbs.db" afterPath="$PROJECT_DIR$/assets/Thumbs.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/ui/Thumbs.db" afterPath="$PROJECT_DIR$/assets/ui/Thumbs.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/assets/words/image/Thumbs.db" afterPath="$PROJECT_DIR$/assets/words/image/Thumbs.db" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/main.js" afterPath="$PROJECT_DIR$/js/main.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/js/playgroundHeroes.js" afterPath="$PROJECT_DIR$/js/playgroundHeroes.js" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -459,7 +452,7 @@
       <workItem from="1495789040190" duration="963000" />
       <workItem from="1495957258956" duration="598000" />
       <workItem from="1496041438720" duration="608000" />
-      <workItem from="1496128378758" duration="342000" />
+      <workItem from="1496128378758" duration="386000" />
     </task>
     <task id="LOCAL-00001" summary="Test commit">
       <created>1483022076985</created>
@@ -531,11 +524,18 @@
       <option name="project" value="LOCAL" />
       <updated>1490018919813</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Small Fixes">
+      <created>1496128738211</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1496128738211</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="153379000" />
+    <option name="totallyTimeSpent" value="153423000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -604,7 +604,8 @@
     <MESSAGE value="Did many things.&#10;&#10;Added more attacks, animations, graphics, sound and over 300 lines of code" />
     <MESSAGE value="Did many things.&#10;&#10;Updated to the latest version of the Phaser Framework, 2.7.3 CE" />
     <MESSAGE value="Added the block and a shield sprite" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added the block and a shield sprite" />
+    <MESSAGE value="Small Fixes" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small Fixes" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
